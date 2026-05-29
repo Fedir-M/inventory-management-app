@@ -1,16 +1,13 @@
-// Это твой обновленный файл схемы Prisma
-
 generator client {
-  provider = "prisma-client-js"       // Исправили имя провайдера на стандартное
-  output   = "../app/generated/prisma" // Оставляем твой кастомный путь для генерации типов
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL") // Добавили эту строку, чтобы Prisma видела ссылку из .env
 }
 
-// Наша модель товаров для инвентаря
+// ===== Product's model ====
 model Product {
   id          String   @id @default(uuid())
   name        String
@@ -18,6 +15,57 @@ model Product {
   description String?
   price       Float
   quantity    Int      @default(0)
+  lowStock    Int      @default(10)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@map("product")
+}
+
+// ===== Neon Auth (Better Auth) =====
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  email         String    @unique
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(uuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@map("account")
 }
