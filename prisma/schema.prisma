@@ -1,0 +1,23 @@
+// Это твой обновленный файл схемы Prisma
+
+generator client {
+  provider = "prisma-client-js"       // Исправили имя провайдера на стандартное
+  output   = "../app/generated/prisma" // Оставляем твой кастомный путь для генерации типов
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // Добавили эту строку, чтобы Prisma видела ссылку из .env
+}
+
+// Наша модель товаров для инвентаря
+model Product {
+  id          String   @id @default(uuid())
+  name        String
+  sku         String   @unique
+  description String?
+  price       Float
+  quantity    Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
