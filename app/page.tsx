@@ -1,11 +1,15 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+// Better Auth
+import { auth } from '@/app/lib/auth';
+import { headers } from 'next/headers';
 
 export default async function Home() {
-  // В актуальной версии Stack Auth пользователь получается вот так:
-  const user = await stackServerApp.getUser();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-  if (user) {
+  if (session) {
     redirect('/dashboard');
   }
 
@@ -22,9 +26,8 @@ export default async function Home() {
             valuable insights.
           </p>
           <div className="flex gap-4 justify-center">
-            {/* Используем готовые ссылки из настроек нашей библиотеки */}
             <Link
-              href={stackServerApp.urls.signIn}
+              href="/sign-in"
               className="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
             >
               Sign In
