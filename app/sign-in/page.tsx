@@ -12,7 +12,7 @@ export default function SignInPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSignIn = async (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.SubmitEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
@@ -78,7 +78,7 @@ export default function SignInPage() {
             disabled={loading}
             className="w-full rounded-md bg-purple-600 py-2 text-white font-semibold hover:bg-purple-700 transition-colors focus:outline-none disabled:bg-gray-400"
           >
-            {loading ? 'Вход...' : 'Войти'}
+            {loading ? 'Entering...' : 'Enter'}
           </button>
         </form>
 
@@ -87,7 +87,7 @@ export default function SignInPage() {
             href="/"
             className="text-sm text-purple-600 hover:text-purple-500 transition-colors"
           >
-            ← На главную
+            Back Home
           </Link>
         </div>
       </div>

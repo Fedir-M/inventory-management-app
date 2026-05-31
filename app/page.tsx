@@ -39,6 +39,19 @@ export default async function Home() {
               Learn More
             </Link>
           </div>
+
+          <div className="mt-8">
+            <h3>
+              Do not have an account? Please,{' '}
+              <Link
+                href="/sign-up"
+                className="text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors"
+              >
+                Sign Up
+              </Link>
+              .
+            </h3>
+          </div>
         </div>
       </div>
     </div>

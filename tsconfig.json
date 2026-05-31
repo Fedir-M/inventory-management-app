@@ -20,6 +20,7 @@
     ],
     "paths": {
       "@/*": ["./*"],
+      "@/prisma-client": ["./prisma/client"],
       "@/app/*": ["./app/*"],
       "@/lib/*": ["./lib/*"]
     }
@@ -28,7 +29,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "prisma.config.ts",
+    "app/prisma.config.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
