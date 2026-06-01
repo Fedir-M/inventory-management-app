@@ -1,0 +1,42 @@
+import { pgTable, text, timestamp, boolean, uuid } from 'drizzle-orm/pg-core';
+
+export const user = pgTable('user', {
+  id: uuid('id').primaryKey(),
+  name: text('name').notNull(),
+  email: text('email').unique().notNull(),
+  emailVerified: boolean('emailVerified').notNull(),
+  image: text('image'),
+  createdAt: timestamp('createdAt').notNull(),
+  updatedAt: timestamp('updatedAt').notNull(),
+});
+
+export const session = pgTable('session', {
+  id: uuid('id').primaryKey(),
+  expiresAt: timestamp('expiresAt').notNull(),
+  token: text('token').unique().notNull(),
+  createdAt: timestamp('createdAt').notNull(),
+  updatedAt: timestamp('updatedAt').notNull(),
+  ipAddress: text('ipAddress'),
+  userAgent: text('userAgent'),
+  userId: uuid('userId')
+    .notNull()
+    .references(() => user.id),
+});
+
+export const account = pgTable('account', {
+  id: uuid('id').primaryKey(),
+  accountId: text('accountId').notNull(),
+  providerId: text('providerId').notNull(),
+  userId: uuid('userId')
+    .notNull()
+    .references(() => user.id),
+  accessToken: text('accessToken'),
+  refreshToken: text('refreshToken'),
+  idToken: text('idToken'),
+  accessTokenExpiresAt: timestamp('accessTokenExpiresAt'),
+  refreshTokenExpiresAt: timestamp('refreshTokenExpiresAt'),
+  scope: text('scope'),
+  password: text('password'),
+  createdAt: timestamp('createdAt').notNull(),
+  updatedAt: timestamp('updatedAt').notNull(),
+});
