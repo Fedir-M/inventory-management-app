@@ -19,7 +19,7 @@ export default function SignUpPage() {
     setError('');
     setLoading(true);
 
-    const { data, error: authError } = await signUp.email({
+    const { error: authError } = await signUp.email({
       email,
       password,
       name,

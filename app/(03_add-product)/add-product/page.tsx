@@ -1,20 +1,15 @@
-import { redirect } from 'next/navigation';
 import { auth } from '@/app/lib/auth';
 import { headers } from 'next/headers';
-import { AddProductForm } from '../../components/features/product/add-product-form';
+import { AddProductForm } from '../../../components/features/product/add-product-form';
 
 export default async function DashboardPage() {
-  // 1. Check the session on a server
+  // Check the session on a server
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
-  // 2. If user isn't autorized - go to '/sign-in'
-  if (!session) {
-    redirect('/sign-in');
-  }
+  if (!session) return null;
 
-  // 3. If authorized - show this
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl shadow-md">
