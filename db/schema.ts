@@ -1,4 +1,12 @@
-import { pgTable, text, timestamp, boolean, uuid } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  uuid,
+  doublePrecision,
+  integer,
+} from 'drizzle-orm/pg-core';
 
 export const user = pgTable('user', {
   id: uuid('id').primaryKey(),
@@ -39,4 +47,16 @@ export const account = pgTable('account', {
   password: text('password'),
   createdAt: timestamp('createdAt').notNull(),
   updatedAt: timestamp('updatedAt').notNull(),
+});
+
+export const product = pgTable('product', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  name: text('name').notNull(),
+  sku: text('sku').unique().notNull(),
+  price: doublePrecision('price').notNull(),
+  quantity: integer('quantity').default(0).notNull(),
+  // .default()
+  lowStock: integer('lowStock').default(10).notNull(),
+  createdAt: timestamp('createdAt').defaultNow().notNull(),
+  updatedAt: timestamp('updatedAt').defaultNow().notNull(),
 });
