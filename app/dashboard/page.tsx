@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/app/lib/auth';
 import { headers } from 'next/headers';
-import { AddProductForm } from './add-product-form';
+import { AddProductForm } from '../../components/features/products/add-product-form';
 
 export default async function DashboardPage() {
   // 1. Check the session on a server
