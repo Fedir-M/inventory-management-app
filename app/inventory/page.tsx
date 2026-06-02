@@ -1,3 +1,4 @@
+import { PageHeader } from '@/components/ui/page-header';
 import { InventoryWidget } from '@/components/widgets/inventory-widget';
 import { db } from '@/db';
 import { product } from '@/db/schema';
@@ -8,12 +9,10 @@ export default async function InventoryPage() {
 
   return (
     <div className="p-8 space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Inventory</h1>
-        <p className="text-muted-foreground">
-          Manage your products and track inventory levels.
-        </p>
-      </div>
+      <PageHeader
+        title="Inventory"
+        description="Manage your products and track inventory levels."
+      />
 
       <InventoryWidget initialProducts={products} />
     </div>
