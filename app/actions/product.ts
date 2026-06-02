@@ -11,8 +11,18 @@ export async function addProduct(prevState: any, formData: FormData) {
     const sku = formData.get('sku') as string;
     const price = parseFloat(formData.get('price') as string);
     const quantity = parseInt(formData.get('quantity') as string);
+    const lowStockRaw = formData.get('lowStock') as string;
+    // Если строка пустая, превращаем её в null или undefined для базы данных
+    const lowStock = lowStockRaw ? parseInt(lowStockRaw) : null;
 
-    await db.insert(product).values({ name, sku, price, quantity });
+    // В Drizzle мы передаем объект с полями прямо сюда:
+    await db.insert(product).values({
+      name,
+      sku,
+      price,
+      quantity,
+      lowStock: lowStock, // <--- Вот здесь оно должно быть!
+    });
 
     revalidatePath('/dashboard');
     return { success: true, message: 'Product added successfully !' };

@@ -54,9 +54,9 @@ export const product = pgTable('product', {
   name: text('name').notNull(),
   sku: text('sku').unique().notNull(),
   price: doublePrecision('price').notNull(),
-  quantity: integer('quantity').default(0).notNull(),
   // .default()
-  lowStock: integer('lowStock').default(10).notNull(),
+  quantity: integer('quantity').default(0).notNull(),
+  lowStock: integer('lowStock').default(10),
   createdAt: timestamp('createdAt').defaultNow().notNull(),
   updatedAt: timestamp('updatedAt').defaultNow().notNull(),
 });

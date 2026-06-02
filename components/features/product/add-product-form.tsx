@@ -23,15 +23,6 @@ export function AddProductForm() {
           />
         </div>
 
-        <div className="space-y-2">
-          <Label className="text-gray-700">SKU</Label>
-          <Input
-            name="sku"
-            required
-            className="border-gray-200 focus:border-purple-500 focus:ring-purple-500 rounded-lg"
-          />
-        </div>
-
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label className="text-gray-700">Price</Label>
@@ -52,6 +43,23 @@ export function AddProductForm() {
               className="border-gray-200 focus:border-purple-500 focus:ring-purple-500 rounded-lg"
             />
           </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-gray-700">SKU</Label>
+          <Input
+            name="sku"
+            required
+            className="border-gray-200 focus:border-purple-500 focus:ring-purple-500 rounded-lg"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-gray-700">Low stck at</Label>
+          <Input
+            name="lowStock"
+            className="border-gray-200 focus:border-purple-500 focus:ring-purple-500 rounded-lg"
+          />
         </div>
 
         <Button
