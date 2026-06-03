@@ -15,6 +15,7 @@
   --color-brand-dark: var(--brand-dark);
   --color-brand-bg-dark: var(--brand-bg-dark);
   --color-brand-bg-sideBar: var(--brand-bg-sideBar);
+  --color-brand-accent-hover: var(--brand-accent-hover);
   --color-brand-bgMain-pages: var(--brand-bgMain-pages);
   --color-brand-light: var(--brand-light);
   --color-brand-border: var(--brand-border);
@@ -69,6 +70,7 @@
   --brand-bg-dark: oklch(16.843% 0.07117 289.397 / 0.145);
   --brand-bgMain-pages: oklch(44.483% 0.12386 293.103 / 0.078);
   --brand-bg-sideBar: oklch(13.924% 0.04238 296.699);
+  --brand-accent-hover: oklch(90.003% 0.05057 285.319 / 0.323);
   --brand-light: oklch(0.95 0.05 285);
   --brand-border: oklch(0.9 0.05 285);
 
