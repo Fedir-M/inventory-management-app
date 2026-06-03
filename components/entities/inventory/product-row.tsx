@@ -13,12 +13,12 @@ interface ProductRowProps {
 export function ProductRow({ product }: ProductRowProps) {
   return (
     <TableRow>
-      <TableCell className="font-medium">{product.name}</TableCell>
+      <TableCell className="font-medium pl-6">{product.name}</TableCell>
       <TableCell>{product.sku}</TableCell>
       <TableCell>${product.price.toFixed(2)}</TableCell>
       <TableCell>{product.quantity}</TableCell>
       <TableCell>{product.lowStock ?? '-'}</TableCell>
-      <TableCell className="text-right">
+      <TableCell className="text-right pr-6">
         <Button variant="ghost" size="sm">
           Edit
         </Button>

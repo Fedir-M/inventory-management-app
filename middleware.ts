@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
     '/settings',
   ];
 
-  // Проверяем, начинается ли путь с любого из защищенных
+  // Check whether the path begins with any of the protected one
   const isProtected = protectedPaths.some((path) =>
     request.nextUrl.pathname.startsWith(path),
   );

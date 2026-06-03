@@ -24,18 +24,18 @@ export function InventoryProductTable({
 }: InventoryProductTableProps) {
   return (
     <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
-      <Table>
-        <TableHeader className="bg-brand-bg-dark font-semibold text-[16px]">
+      <Table className="w-full">
+        <TableHeader className="bg-brand-bg-dark font-semibold text-[16px] [&_tr]:border-none  ">
           <TableRow className="hover:bg-transparent border-b-0">
-            <TableHead>Title</TableHead>
+            <TableHead className="pl-6">Title</TableHead>
             <TableHead>SKU</TableHead>
             <TableHead>Price</TableHead>
             <TableHead>Qty</TableHead>
             <TableHead>Low stock</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+            <TableHead className="text-right pr-6">Actions</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody className="[&_tr]:border-none">
           {products.length > 0 ? (
             products.map((item) => <ProductRow key={item.id} product={item} />)
           ) : (
