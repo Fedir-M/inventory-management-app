@@ -2,9 +2,10 @@ import { TSession } from '@/components/widgets/sidebar-widget';
 
 interface ISidebarProfileProps {
   session: TSession | null;
+  className?: string;
 }
 
-export function SidebarProfile({ session }: ISidebarProfileProps) {
+export function SidebarProfile({ session, className }: ISidebarProfileProps) {
   if (!session) return null;
 
   const initials = session.user.name
@@ -12,7 +13,9 @@ export function SidebarProfile({ session }: ISidebarProfileProps) {
     : '?';
 
   return (
-    <div className="flex items-center gap-3 bg-brand-accent-hover p-2 rounded-xl shadow-sm overflow-hidden">
+    <div
+      className={`flex items-center gap-3 bg-brand-accent-hover p-2 rounded-xl shadow-sm overflow-hidden ${className}`}
+    >
       <div className="flex items-center justify-center  bg-brand-dark w-12 h-12 rounded-full p-3  text-brand-light font-bold text-[22px] text-center ">
         {initials}
       </div>

@@ -1,20 +1,26 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { SideBarLink } from '../entities/sidebar.tsx/sidebar-link';
+import { SideBarLink } from '../entities/sidebar/sidebar-link';
 import {
   LayoutDashboard,
   ShelvingUnit,
   CirclePlus,
   Settings,
+  PackageCheck,
 } from 'lucide-react';
-import { SidebarProfile } from '../entities/sidebar.tsx/sidebar-profile';
+import { SidebarProfile } from '../entities/sidebar/sidebar-profile';
 import { auth } from '@/app/lib/auth';
+import { Logo } from '../entities/logo/logo';
+import Link from 'next/link';
+import { LogoutButton } from '../features/log-out/logout-button';
 
 export type TSession = typeof auth.$Infer.Session;
 
 export function SidebarWidget({ session }: { session: TSession | null }) {
   const pathName = usePathname();
+
+  const iconLogo = <PackageCheck />;
 
   const sideBarLinks = [
     {
@@ -34,13 +40,15 @@ export function SidebarWidget({ session }: { session: TSession | null }) {
     <aside className="flex flex-col h-screen justify-between  w-64 border-r bg-brand-bg-sideBar px-4 py-8">
       <div>
         {/* Logo */}
-        <div className="mb-8 text-xl font-bold">Logo</div>
+        <Link href="/dashboard" className="w-full flex justify-center">
+          <Logo iconLogo={iconLogo} title="IMS" />
+        </Link>
 
         {/* Title */}
-        <p className="text-gray-500 uppercase text-xs mb-4">Inventory</p>
+        <p className="text-gray-500 uppercase text-xs mt-20 ">Inventory</p>
 
         {/* Navigation Menu */}
-        <nav className="flex flex-col gap-2">
+        <nav className="flex flex-col gap-2 mt-4">
           {sideBarLinks.map((link) => (
             <SideBarLink
               key={link.name}
@@ -54,7 +62,24 @@ export function SidebarWidget({ session }: { session: TSession | null }) {
         </nav>
       </div>
 
-      <SidebarProfile session={session} />
+      <div>
+        {/* Title Profile Info */}
+        <p className="text-gray-500 uppercase text-xs mt-6">Profile Info</p>
+        <SidebarProfile session={session} className="mt-2" />
+
+        {/* Title LogOut */}
+        <p className="text-gray-500 uppercase text-xs mt-6">LogOut</p>
+
+        <LogoutButton
+          className="w-full flex justify-center mt-2
+          text-brand-accent-hover
+          border-brand-accent-hover
+          hover:bg-transparent 
+    hover:border-destructive 
+    hover:text-destructive 
+    transition-colors duration-200  "
+        />
+      </div>
     </aside>
   );
 }
