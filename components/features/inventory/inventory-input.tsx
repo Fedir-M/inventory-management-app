@@ -8,7 +8,7 @@ export function InventoryInput({
   onChange: (val: string) => void;
 }) {
   return (
-    <div className="border border-gray-200 bg-white p-4 rounded-xl shadow-sm overflow-hidden">
+    <div className="flex justify-center border border-gray-200 bg-white p-4 rounded-xl shadow-sm overflow-hidden">
       <Input
         placeholder="Search products..."
         value={value}

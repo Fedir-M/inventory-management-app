@@ -34,7 +34,7 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-screen flex flex-row">
+      <body suppressHydrationWarning className="min-h-screen flex flex-row">
         <SidebarWidget session={session} />
 
         <main className="flex-1 overflow-y-auto bg-brand-bgMain-pages">
