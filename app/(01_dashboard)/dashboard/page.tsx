@@ -1,13 +1,14 @@
 import { auth } from '@/app/lib/auth';
 import { PageHeader } from '@/components/ui/page-header';
 import { headers } from 'next/headers';
-import { LayoutDashboard } from 'lucide-react';
+import { LayoutDashboard, TrendingDown, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ProductChart } from '@/components/entities/dashboard/product-chart';
 import { KPICard } from '@/components/entities/dashboard/kpi-card';
 import { StockRow } from '@/components/entities/dashboard/stock-level-row';
 import { product as productsTable } from '@/db/schema';
 import { db } from '@/db';
+import { getDashboardStats } from '@/db/db-queries';
 
 export default async function DashboardPage() {
   // Check the session on a server
@@ -17,8 +18,16 @@ export default async function DashboardPage() {
 
   if (!session) return null;
 
-  const products = await db.select().from(productsTable).limit(5);
+  const [stats, products] = await Promise.all([
+    getDashboardStats(),
+    db.select().from(productsTable).limit(10),
+  ]);
 
+  // Calculate the dynamic of growth
+  const productDiff =
+    stats.current.totalProducts - stats.previous.totalProducts;
+  const valueDiff = stats.current.totalValue - stats.previous.totalValue;
+  const lowStockDiff = stats.current.lowStock - stats.previous.lowStock;
   // If authorized - show this
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -38,7 +47,7 @@ export default async function DashboardPage() {
 
       {/* Main grid of Dashboard 2x2 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* 1. Main. Key Metrics */}
+        {/* ----- 1. Main. Key Metrics ----- */}
         <Card className="border shadow-sm">
           <CardHeader>
             <CardTitle>Key Metrics</CardTitle>
@@ -46,17 +55,49 @@ export default async function DashboardPage() {
           <CardContent className="grid grid-cols-3 gap-4">
             <KPICard
               title="Total Products"
-              value="25"
-              growth="+25"
-              icon={null}
+              value={stats.current.totalProducts.toString()}
+              growth={productDiff >= 0 ? `+${productDiff}` : `${productDiff}`}
+              trendDirection="positive"
+              icon={
+                productDiff >= 0 ? (
+                  <TrendingUp size={16} />
+                ) : (
+                  <TrendingDown size={16} />
+                )
+              }
             />
             <KPICard
               title="Total Value"
-              value="$13724"
-              growth="+$13724"
-              icon={null}
+              value={`$${stats.current.totalValue.toLocaleString()}`}
+              growth={
+                valueDiff >= 0
+                  ? `+$${valueDiff.toFixed(0)}`
+                  : `-$${Math.abs(valueDiff).toFixed(0)}`
+              }
+              trendDirection="positive"
+              icon={
+                valueDiff >= 0 ? (
+                  <TrendingUp size={16} />
+                ) : (
+                  <TrendingDown size={16} />
+                )
+              }
             />
-            <KPICard title="Low Stock" value="10" growth="+10" icon={null} />
+            <KPICard
+              title="Low Stock"
+              value={stats.current.lowStock.toString()}
+              growth={
+                lowStockDiff >= 0 ? `+${lowStockDiff}` : `${lowStockDiff}`
+              }
+              trendDirection="negative"
+              icon={
+                lowStockDiff >= 0 ? (
+                  <TrendingUp size={16} className="text-destructive" />
+                ) : (
+                  <TrendingDown size={16} className="text-emerald-600" />
+                )
+              }
+            />
           </CardContent>
         </Card>
 
