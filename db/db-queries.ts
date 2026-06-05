@@ -2,6 +2,9 @@ import { db } from '@/db';
 import { product as productsTable } from '@/db/schema';
 import { count, sql } from 'drizzle-orm';
 
+// =======================================================================
+//*                         Info for "Key Metrics"
+// =======================================================================
 export async function getDashboardStats() {
   const oneMonthAgo = new Date();
   oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
@@ -43,6 +46,10 @@ export async function getDashboardStats() {
   };
 }
 
+// =======================================================================
+//*                    Info for "New products per week"
+// =======================================================================
+
 export async function getProductChartData() {
   const data = await db.execute(sql`
     WITH weeks AS (
@@ -73,3 +80,13 @@ export async function getProductChartData() {
 
   return data.rows as { date: string; value: number }[];
 }
+
+// =======================================================================
+//*                      Info for "Stock Levels"
+// =======================================================================
+export async function getDashboardStockLevels() {}
+
+// =======================================================================
+//*                         Info for "Efficiency"
+// =======================================================================
+export async function getDashboardEfficiency() {}
