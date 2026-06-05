@@ -9,29 +9,30 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-// Just for a test example
-const data = [
-  { date: '07/10', value: 2 },
-  { date: '07/17', value: 0 },
-  { date: '07/24', value: 1 },
-  { date: '07/31', value: 3 },
-  { date: '08/07', value: 0 },
-  { date: '08/14', value: 1 },
-];
+interface IProductChartProps {
+  data: { date: string; value: number }[];
+}
 
-export function ProductChart() {
+export function ProductChart({ data }: IProductChartProps) {
   return (
     <ResponsiveContainer width="100%" height={200}>
       <LineChart data={data}>
         <XAxis dataKey="date" fontSize={12} tickLine={false} axisLine={false} />
         <YAxis fontSize={12} tickLine={false} axisLine={false} />
-        <Tooltip />
+        <Tooltip
+          contentStyle={{
+            borderRadius: '8px',
+            border: 'none',
+            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+          }}
+        />
         <Line
           type="monotone"
           dataKey="value"
           stroke="#7c3aed"
           strokeWidth={2}
           dot={{ r: 4 }}
+          activeDot={{ r: 6 }}
         />
       </LineChart>
     </ResponsiveContainer>

@@ -42,3 +42,34 @@ export async function getDashboardStats() {
     },
   };
 }
+
+export async function getProductChartData() {
+  const data = await db.execute(sql`
+    WITH weeks AS (
+   
+      SELECT generate_series(
+        DATE_TRUNC('week', NOW() - INTERVAL '7 weeks'),
+        DATE_TRUNC('week', NOW()),
+        '1 week'::interval
+      ) AS week_start
+    ),
+    product_counts AS (
+    
+      SELECT 
+        DATE_TRUNC('week', ${productsTable.createdAt}) AS week,
+        COUNT(${productsTable.id}) AS count
+      FROM ${productsTable}
+      WHERE ${productsTable.createdAt} >= DATE_TRUNC('week', NOW() - INTERVAL '7 weeks')
+      GROUP BY 1
+    )
+   
+    SELECT 
+      TO_CHAR(weeks.week_start, 'MM/DD') as date,
+      COALESCE(product_counts.count, 0)::int as value
+    FROM weeks
+    LEFT JOIN product_counts ON weeks.week_start = product_counts.week
+    ORDER BY weeks.week_start ASC;
+  `);
+
+  return data.rows as { date: string; value: number }[];
+}

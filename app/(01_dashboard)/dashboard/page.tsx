@@ -8,7 +8,7 @@ import { KPICard } from '@/components/entities/dashboard/kpi-card';
 import { StockRow } from '@/components/entities/dashboard/stock-level-row';
 import { product as productsTable } from '@/db/schema';
 import { db } from '@/db';
-import { getDashboardStats } from '@/db/db-queries';
+import { getDashboardStats, getProductChartData } from '@/db/db-queries';
 
 export default async function DashboardPage() {
   // Check the session on a server
@@ -18,9 +18,10 @@ export default async function DashboardPage() {
 
   if (!session) return null;
 
-  const [stats, products] = await Promise.all([
+  const [stats, products, data] = await Promise.all([
     getDashboardStats(),
     db.select().from(productsTable).limit(10),
+    getProductChartData(),
   ]);
 
   // Calculate the dynamic of growth
@@ -101,18 +102,18 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* 2. Graph (Placeholder) */}
-        <Card className="border-none shadow-none">
+        {/* ----- 2. Graph (Placeholder) ----- */}
+        <Card className="border shadow-sm">
           <CardHeader>
             <CardTitle>New products per week</CardTitle>
           </CardHeader>
           <CardContent className="h-64">
-            <ProductChart />
+            <ProductChart data={data} />
           </CardContent>
         </Card>
 
         {/* ---- 3. Stock Levels ----- */}
-        <Card className="border-none shadow-none">
+        <Card className="border shadow-sm">
           <CardHeader>
             <CardTitle>Stock Levels</CardTitle>
           </CardHeader>
