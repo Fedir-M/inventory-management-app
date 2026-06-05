@@ -8,19 +8,19 @@ export async function getDashboardStats() {
 
   const result = await db
     .select({
-      // Текущие
+      // Current
       currentTotalProducts: count(productsTable.id),
       currentTotalValue: sql<number>`COALESCE(SUM(${productsTable.price} * ${productsTable.quantity}), 0)`,
       currentLowStock: count(
         sql`CASE WHEN ${productsTable.quantity} < ${productsTable.lowStock} THEN 1 ELSE NULL END`,
       ),
 
-      // Месяц назад
+      // 1 month ago
       pastTotalProducts: count(
         sql`CASE WHEN ${productsTable.createdAt} < ${oneMonthAgo.toISOString()} THEN 1 ELSE NULL END`,
       ),
       pastTotalValue: sql<number>`COALESCE(SUM(CASE WHEN ${productsTable.createdAt} < ${oneMonthAgo.toISOString()} THEN ${productsTable.price} * ${productsTable.quantity} ELSE 0 END), 0)`,
-      // Логика: учитываем только товары, созданные ДО месяца назад, и проверяем их остаток
+
       pastLowStock: count(
         sql`CASE WHEN ${productsTable.createdAt} < ${oneMonthAgo.toISOString()} AND ${productsTable.quantity} < ${productsTable.lowStock} THEN 1 ELSE NULL END`,
       ),

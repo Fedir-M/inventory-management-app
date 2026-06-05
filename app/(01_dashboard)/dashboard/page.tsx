@@ -71,8 +71,8 @@ export default async function DashboardPage() {
               value={`$${stats.current.totalValue.toLocaleString()}`}
               growth={
                 valueDiff >= 0
-                  ? `+$${valueDiff.toFixed(0)}`
-                  : `-$${Math.abs(valueDiff).toFixed(0)}`
+                  ? `+$${valueDiff.toLocaleString()}`
+                  : `-$${Math.abs(valueDiff).toLocaleString()}`
               }
               trendDirection="positive"
               icon={
