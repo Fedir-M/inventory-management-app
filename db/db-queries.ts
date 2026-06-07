@@ -1,6 +1,8 @@
+'use server';
+
 import { db } from '@/db';
 import { product as productsTable } from '@/db/schema';
-import { count, sql } from 'drizzle-orm';
+import { count, eq, sql } from 'drizzle-orm';
 
 // =======================================================================
 //*                         Info for "Key Metrics"
@@ -84,7 +86,30 @@ export async function getProductChartData() {
 // =======================================================================
 //*                      Info for "Stock Levels"
 // =======================================================================
-export async function getDashboardStockLevels() {}
+
+export async function getDashboardStockLevels(type: 'low' | 'out') {
+  if (type === 'low') {
+    return await db
+      .select()
+      .from(productsTable)
+      .where(sql`${productsTable.quantity} > 0`)
+      .orderBy(
+        // 1st pool - lowStock (prioritet 0), the rest (prioritet 1)
+        sql`CASE WHEN ${productsTable.quantity} < ${productsTable.lowStock} THEN 0 ELSE 1 END ASC`,
+        // in short supply - according to the degree of shortage, for the rest - according to the increasing balance
+        sql`(${productsTable.lowStock} - ${productsTable.quantity}) DESC`,
+        sql`${productsTable.quantity} ASC`,
+      )
+      .limit(10);
+  }
+
+  return await db
+    .select()
+    .from(productsTable)
+    .where(eq(productsTable.quantity, 0))
+    .orderBy(sql`LOWER(TRIM(${productsTable.name})) ASC`)
+    .limit(10);
+}
 
 // =======================================================================
 //*                         Info for "Efficiency"

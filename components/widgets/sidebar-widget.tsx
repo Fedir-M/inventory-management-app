@@ -41,7 +41,7 @@ export function SidebarWidget({ session }: { session: TSession | null }) {
   ];
   return (
     <aside
-      className={`flex shrink-0 flex-col h-full justify-between  ${isOpen ? 'w-64' : 'w-20'} border-r bg-brand-bg-sideBar px-4 py-8`}
+      className={`relative flex shrink-0 flex-col h-full justify-between  ${isOpen ? 'w-64' : 'w-20'} border-r bg-brand-bg-sideBar px-4 py-8`}
     >
       <SidebarOnOff
         isOpen={isOpen}
