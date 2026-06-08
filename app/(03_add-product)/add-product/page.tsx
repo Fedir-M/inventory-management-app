@@ -13,7 +13,7 @@ export default async function DashboardPage() {
   if (!session) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="flex flex-col items-center min-h-screen bg-gray-50 p-8 ">
       <PageHeader
         title="Add product"
         description="Add your new product here."

@@ -3,6 +3,7 @@ import { PageHeader } from '@/components/ui/page-header';
 import { headers } from 'next/headers';
 import { LayoutDashboard } from 'lucide-react';
 import {
+  getDashboardEfficiency,
   getDashboardStats,
   getDashboardStockLevels,
   getProductChartData,
@@ -17,10 +18,11 @@ export default async function DashboardPage() {
 
   if (!session) return null;
 
-  const [stats, data, initialProducts] = await Promise.all([
+  const [stats, data, initialProducts, efficiency] = await Promise.all([
     getDashboardStats(),
     getProductChartData(),
     getDashboardStockLevels('low'),
+    getDashboardEfficiency(),
   ]);
 
   // Calculate the dynamic of growth
@@ -53,6 +55,7 @@ export default async function DashboardPage() {
         productDiff={productDiff}
         valueDiff={valueDiff}
         lowStockDiff={lowStockDiff}
+        efficiency={efficiency}
       />
     </div>
   );

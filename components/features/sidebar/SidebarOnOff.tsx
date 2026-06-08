@@ -23,9 +23,9 @@ export function SidebarOnOff({
         className="group hover:bg-transparent transition-colors text-brand-accent-hover hover:text-brand-primary"
       >
         {isOpen ? (
-          <PanelRightClose className="size-6" />
-        ) : (
           <PanelRightOpen className="size-6" />
+        ) : (
+          <PanelRightClose className="size-6" />
         )}
       </Button>
     </div>

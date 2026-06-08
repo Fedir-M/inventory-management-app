@@ -28,6 +28,10 @@ interface IDashboardWidgetProps {
   productDiff: number;
   valueDiff: number;
   lowStockDiff: number;
+  efficiency: {
+    percentage: number;
+    diff: number;
+  };
 }
 
 export function DashboardWidget({
@@ -37,11 +41,14 @@ export function DashboardWidget({
   productDiff,
   valueDiff,
   lowStockDiff,
+  efficiency,
 }: IDashboardWidgetProps) {
   // ----- Local states -----
   const [products, setProducts] = useState(initialProducts);
   const [active, setActive] = useState<'low' | 'out'>('low');
   const [isPending, startTransition] = useTransition();
+
+  const { percentage, diff } = efficiency;
 
   const handleToggle = (val: 'low' | 'out') => {
     startTransition(async () => {
@@ -56,7 +63,9 @@ export function DashboardWidget({
         {/* ----- 1. Main. Key Metrics ----- */}
         <Card className="border shadow-sm">
           <CardHeader>
-            <CardTitle>Key Metrics</CardTitle>
+            <CardTitle className="font-semibold text-lg p-4">
+              Key Metrics
+            </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-3 gap-4">
             <KPICard
@@ -110,7 +119,9 @@ export function DashboardWidget({
         {/* ----- 2. Graph (Placeholder) ----- */}
         <Card className="border shadow-sm">
           <CardHeader>
-            <CardTitle>New products per week</CardTitle>
+            <CardTitle className="font-semibold text-lg p-4">
+              New products per week
+            </CardTitle>
           </CardHeader>
           <CardContent className="h-64">
             <ProductChart data={data} />
@@ -119,9 +130,8 @@ export function DashboardWidget({
 
         {/* ---- 3. Stock Levels ----- */}
         <Card className="border shadow-sm">
-          {/* Убираем CardHeader, делаем свой контейнер для заголовка и кнопок */}
-          <div className="flex items-center justify-between p-6 pb-2">
-            <h3 className="font-semibold text-lg">Stock Levels</h3>
+          <div className="flex items-center justify-between p-4 pb-2">
+            <h3 className="font-semibold text-lg px-4">Stock Levels</h3>
 
             <div className="shrink-0">
               <ToggleStockLevel
@@ -147,11 +157,21 @@ export function DashboardWidget({
         {/* ----- 4. Efficiency ----- */}
         <Card className="border shadow-sm">
           <CardHeader>
-            <CardTitle>Efficiency</CardTitle>
+            <CardTitle className="font-semibold text-lg p-4">
+              Efficiency
+            </CardTitle>
           </CardHeader>
-          <CardContent className="flex flex-col items-center justify-center">
+          <CardContent className="flex flex-col items-center justify-center py-10">
             <div className="size-32 rounded-full border-8 border-brand-primary flex items-center justify-center">
-              <span className="text-2xl font-bold">60%</span>
+              <span className="text-2xl font-bold">{percentage}%</span>
+            </div>
+
+            <div
+              className={`mt-3 flex items-center gap-1 text-sm font-medium 
+    ${diff >= 0 ? 'text-emerald-600' : 'text-destructive'}`}
+            >
+              {diff > 0 ? '▲' : '▼'} {Math.abs(diff)}%
+              <span className="text-gray-500 font-normal">vs last month</span>
             </div>
             <p className="mt-2 text-sm text-gray-500">In Stock</p>
           </CardContent>

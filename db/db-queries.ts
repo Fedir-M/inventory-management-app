@@ -114,4 +114,39 @@ export async function getDashboardStockLevels(type: 'low' | 'out') {
 // =======================================================================
 //*                         Info for "Efficiency"
 // =======================================================================
-export async function getDashboardEfficiency() {}
+export async function getDashboardEfficiency() {
+  const oneMonthAgo = new Date();
+  oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
+
+  const result = await db
+    .select({
+      // Current data
+      total: count(productsTable.id),
+      inStock: count(
+        sql`CASE WHEN ${productsTable.quantity} >= ${productsTable.lowStock} THEN 1 ELSE NULL END`,
+      ),
+      // Last month data ( createdAt < oneMonthAgo )
+      pastTotal: count(
+        sql`CASE WHEN ${productsTable.createdAt} < ${oneMonthAgo.toISOString()} THEN 1 ELSE NULL END`,
+      ),
+      pastInStock: count(
+        sql`CASE WHEN ${productsTable.createdAt} < ${oneMonthAgo.toISOString()} AND ${productsTable.quantity} >= ${productsTable.lowStock} THEN 1 ELSE NULL END`,
+      ),
+    })
+    .from(productsTable);
+
+  const stats = result[0];
+
+  const currentPercent =
+    stats.total > 0
+      ? Math.round((Number(stats.inStock) / Number(stats.total)) * 100)
+      : 0;
+  const pastPercent =
+    stats.pastTotal > 0
+      ? Math.round((Number(stats.pastInStock) / Number(stats.pastTotal)) * 100)
+      : 0;
+
+  const diff = currentPercent - pastPercent;
+
+  return { percentage: currentPercent, diff };
+}
