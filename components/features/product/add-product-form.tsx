@@ -1,16 +1,37 @@
 'use client';
 
-import { useActionState } from 'react';
-import { addProduct } from '@/app/actions/product';
+import { useActionState, useEffect } from 'react';
+import { addProduct, TActionResponse } from '@/app/actions/product';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { toast } from 'sonner';
 
-export function AddProductForm() {
-  const [state, action, isPending] = useActionState(addProduct, null);
+interface IAddProductFormProps {
+  className: string;
+}
+
+export function AddProductForm({ className }: IAddProductFormProps) {
+  const [state, action, isPending] = useActionState<
+    TActionResponse | null,
+    FormData
+  >(addProduct, null);
+
+  // =====================================================================
+  //*                         UseEffects
+  // =====================================================================
+  useEffect(() => {
+    if (state?.success === true) {
+      toast.success(state.message); // green toast
+    } else if (state?.success === false) {
+      toast.error(state.message); // red toast
+    }
+  }, [state]);
 
   return (
-    <div className="bg-white p-8 rounded-xl shadow-lg border border-purple-100 max-w-md w-full">
+    <div
+      className={`bg-white p-8 rounded-xl shadow-lg border border-purple-100 w-full ${className}`}
+    >
       <h2 className="text-2xl font-bold text-gray-900 mb-6">Add New Product</h2>
 
       <form action={action} className="space-y-4">
@@ -69,14 +90,6 @@ export function AddProductForm() {
         >
           {isPending ? 'Saving...' : 'Save Product'}
         </Button>
-
-        {state?.message && (
-          <p
-            className={`text-sm text-center ${state.success ? 'text-green-600' : 'text-red-600'}`}
-          >
-            {state.message}
-          </p>
-        )}
       </form>
     </div>
   );

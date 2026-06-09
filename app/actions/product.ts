@@ -4,6 +4,11 @@ import { db } from '@/db';
 import { product } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 
+export type TActionResponse = {
+  success: boolean;
+  message: string;
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function addProduct(prevState: any, formData: FormData) {
   try {
@@ -21,13 +26,13 @@ export async function addProduct(prevState: any, formData: FormData) {
       sku,
       price,
       quantity,
-      lowStock: lowStock, // <--- Вот здесь оно должно быть!
+      lowStock: lowStock,
     });
 
     revalidatePath('/dashboard');
     return { success: true, message: 'Product added successfully !' };
   } catch (error) {
-    // Выводим реальную ошибку в терминал
+    // реальная ошибка
     console.error('Ошибка базы данных:', error);
     return {
       success: false,

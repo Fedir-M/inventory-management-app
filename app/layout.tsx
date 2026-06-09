@@ -4,6 +4,7 @@ import './globals.css';
 import { auth } from '@/app/lib/auth';
 import { headers } from 'next/headers';
 import { SidebarWidget } from '@/components/widgets/sidebar-widget';
+import { Toaster } from '@/components/ui/sonner';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -43,6 +44,21 @@ export default async function RootLayout({
         <main className="flex-1 overflow-y-auto bg-brand-bgMain-pages">
           {children}
         </main>
+
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            classNames: {
+              toast: 'border-1',
+              // success
+              success: 'bg-emerald-50 border-emerald-500 text-emerald-700',
+              // error
+              error: 'bg-destructive border-destructive text-destructive',
+              title: 'font-bold text-lg',
+              icon: 'scale-150',
+            },
+          }}
+        />
       </body>
     </html>
   );

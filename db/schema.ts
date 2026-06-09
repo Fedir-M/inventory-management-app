@@ -6,6 +6,7 @@ import {
   uuid,
   doublePrecision,
   integer,
+  index,
 } from 'drizzle-orm/pg-core';
 
 export const user = pgTable('user', {
@@ -18,18 +19,24 @@ export const user = pgTable('user', {
   updatedAt: timestamp('updatedAt').notNull(),
 });
 
-export const session = pgTable('session', {
-  id: uuid('id').primaryKey(),
-  expiresAt: timestamp('expiresAt').notNull(),
-  token: text('token').unique().notNull(),
-  createdAt: timestamp('createdAt').notNull(),
-  updatedAt: timestamp('updatedAt').notNull(),
-  ipAddress: text('ipAddress'),
-  userAgent: text('userAgent'),
-  userId: uuid('userId')
-    .notNull()
-    .references(() => user.id),
-});
+export const session = pgTable(
+  'session',
+  {
+    id: uuid('id').primaryKey(),
+    expiresAt: timestamp('expiresAt').notNull(),
+    token: text('token').unique().notNull(),
+    createdAt: timestamp('createdAt').notNull(),
+    updatedAt: timestamp('updatedAt').notNull(),
+    ipAddress: text('ipAddress'),
+    userAgent: text('userAgent'),
+    userId: uuid('userId')
+      .notNull()
+      .references(() => user.id),
+  },
+  (t) => ({
+    userIdIdx: index('session_userId_idx').on(t.userId),
+  }),
+);
 
 export const account = pgTable('account', {
   id: uuid('id').primaryKey(),

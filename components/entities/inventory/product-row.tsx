@@ -6,11 +6,11 @@ import { product } from '@/db/schema';
 // === stupid component ===
 type Product = InferSelectModel<typeof product>;
 
-interface ProductRowProps {
+interface IProductRowProps {
   product: Product;
 }
 
-export function ProductRow({ product }: ProductRowProps) {
+export function ProductRow({ product }: IProductRowProps) {
   return (
     <TableRow>
       <TableCell className="font-medium pl-6">{product.name}</TableCell>

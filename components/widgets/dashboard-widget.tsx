@@ -171,7 +171,7 @@ export function DashboardWidget({
     ${diff >= 0 ? 'text-emerald-600' : 'text-destructive'}`}
             >
               {diff > 0 ? '▲' : '▼'} {Math.abs(diff)}%
-              <span className="text-gray-500 font-normal">vs last month</span>
+              <span className="text-gray-500 font-normal">vs LAST MONTH</span>
             </div>
             <p className="mt-2 text-sm text-gray-500">In Stock</p>
           </CardContent>
