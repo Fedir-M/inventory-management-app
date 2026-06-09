@@ -34,7 +34,7 @@ export function AddProductForm({ className }: IAddProductFormProps) {
     >
       <h2 className="text-2xl font-bold text-gray-900 mb-6">Add New Product</h2>
 
-      <form action={action} className="space-y-4">
+      <form action={action} className="space-y-4 grow">
         <div className="space-y-2">
           <Label className="text-gray-700">Title</Label>
           <Input

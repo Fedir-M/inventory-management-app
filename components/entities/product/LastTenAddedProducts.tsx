@@ -25,6 +25,7 @@ export function LastTenAddedProducts({
             sku={product.sku}
             quantity={product.quantity}
             createdAt={product.createdAt}
+            showQuantity={false}
           />
         ))}
       </CardContent>

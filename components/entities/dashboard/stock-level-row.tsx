@@ -4,6 +4,7 @@ interface IStockRowProps {
   lowStock?: number | null;
   sku?: string;
   createdAt?: Date;
+  showQuantity?: boolean;
 }
 
 export function StockRow({
@@ -12,6 +13,7 @@ export function StockRow({
   lowStock,
   sku,
   createdAt,
+  showQuantity = true,
 }: IStockRowProps) {
   // Color's logic: 0 - red, < 10 - yellow, other - green
   const getStatusColor = (qty: number, limit: number | null) => {
@@ -22,25 +24,32 @@ export function StockRow({
     return { dot: 'bg-emerald-600', text: 'text-emerald-700' };
   };
 
-  const { dot } = getStatusColor(quantity, lowStock ?? null);
+  const { dot, text } = getStatusColor(quantity, lowStock ?? null);
+
   const formattedDate = createdAt
     ? new Intl.DateTimeFormat('en-US', {
         month: 'short',
         day: 'numeric',
         year: '2-digit',
       }).format(createdAt)
-    : '';
+    : null;
 
   return (
     <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
       <div className="flex items-center gap-3">
         <div className={`size-2.5 rounded-full ${dot}`} />
         <span className="font-medium text-sm">{name}</span>
-
-        {sku && <span className="text-xs text-gray-400 font-mono ">{sku}</span>}
+        {/* sku */}
+        {sku && <span className="text-xs text-gray-400 font-mono">{sku}</span>}
       </div>
 
-      <span className="text-sm text-gray-500 font-medium">{formattedDate}</span>
+      {showQuantity && (
+        <span className={`font-bold text-sm ${text}`}>{quantity} units</span>
+      )}
+
+      {formattedDate && (
+        <span className="text-xs text-gray-400">{formattedDate}</span>
+      )}
     </div>
   );
 }
