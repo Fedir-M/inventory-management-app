@@ -84,11 +84,9 @@ export function ProductDetailsPagedWidget({
 
           {/* --- Description --- */}
           <div className="mt-6 w-full">
-            <ProductDetailsLines
-              label="Description:"
-              value={product.description ?? 'No description provided'}
-              className="w-full"
-            />
+            <div className="flex flex-col justify-center items-center  w-full  p-3 border border-brand-border rounded-md text-gray-700 min-h-[150px] break-all whitespace-pre-wrap wrap-break-word overflow-hidden">
+              {product?.description || '*** No description provided ***'}
+            </div>
           </div>
         </div>
       </div>
