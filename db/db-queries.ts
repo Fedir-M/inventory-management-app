@@ -1,12 +1,12 @@
 'use server';
 
 import { db } from '@/db';
-import { product as productsTable } from '@/db/schema';
+import { product, product as productsTable } from '@/db/schema';
 import { count, eq, sql } from 'drizzle-orm';
 
-// =======================================================================
+// ====================================================================
 //*                         Info for "Key Metrics"
-// =======================================================================
+// ====================================================================
 export async function getDashboardStats() {
   const oneMonthAgo = new Date();
   oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
@@ -111,9 +111,9 @@ export async function getDashboardStockLevels(type: 'low' | 'out') {
     .limit(10);
 }
 
-// =======================================================================
+// ====================================================================
 //*                         Info for "Efficiency"
-// =======================================================================
+// ====================================================================
 export async function getDashboardEfficiency() {
   const oneMonthAgo = new Date();
   oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
@@ -149,4 +149,17 @@ export async function getDashboardEfficiency() {
   const diff = currentPercent - pastPercent;
 
   return { percentage: currentPercent, diff };
+}
+
+// =================================================================
+//*                         get Product By Id
+// =================================================================
+export async function getProductById(id: string) {
+  return await db.query.product.findFirst({
+    where: eq(product.id, id),
+    with: {
+      creator: true, // createdBy field
+      updater: true, // updatedBy field
+    },
+  });
 }

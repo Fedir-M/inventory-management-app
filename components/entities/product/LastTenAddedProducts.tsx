@@ -21,11 +21,13 @@ export function LastTenAddedProducts({
         {products.map((product) => (
           <StockRow
             key={product.id}
+            id={product.id}
             name={product.name}
             sku={product.sku}
             quantity={product.quantity}
             createdAt={product.createdAt}
             showQuantity={false}
+            isClickable={false}
           />
         ))}
       </CardContent>

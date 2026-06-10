@@ -9,6 +9,7 @@ export async function middleware(request: NextRequest) {
     '/dashboard',
     '/inventory',
     '/add-product',
+    '/product',
     '/settings',
   ];
 
@@ -31,5 +32,6 @@ export const config = {
     '/inventory/:path*',
     '/add-product/:path*',
     '/settings/:path*',
+    '/product/:path*',
   ],
 };

@@ -60,7 +60,7 @@ export default function SignUpPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 text-black"
-              placeholder="Olexii Chumak"
+              placeholder="Enter your name..."
             />
           </div>
 
@@ -74,7 +74,7 @@ export default function SignUpPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 text-black"
-              placeholder="shaky@mail.net"
+              placeholder="user@mail.yes"
             />
           </div>
 

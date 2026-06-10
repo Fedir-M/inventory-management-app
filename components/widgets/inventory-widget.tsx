@@ -1,17 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { InferSelectModel } from 'drizzle-orm';
-import { product } from '@/db/schema';
 import { InventoryProductTable } from '@/components/features/inventory/product-table';
 import { InventoryInput } from '../features/inventory/inventory-input';
-
-type Product = InferSelectModel<typeof product>;
+import { TProduct } from '@/db/db.types';
 
 export function InventoryWidget({
   initialProducts,
 }: {
-  initialProducts: Product[];
+  initialProducts: TProduct[];
 }) {
   const [search, setSearch] = useState('');
 

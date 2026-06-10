@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1780341445325,
-      "tag": "0000_premium_cassandra_nova",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1780389139686,
-      "tag": "0001_spooky_sleeper",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1780398438261,
-      "tag": "0002_complex_corsair",
+      "when": 1781027993590,
+      "tag": "0000_good_sugar_man",
       "breakpoints": true
     }
   ]

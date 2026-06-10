@@ -67,6 +67,15 @@ export function AddProductForm({ className }: IAddProductFormProps) {
         </div>
 
         <div className="space-y-2">
+          <Label className="text-gray-700">Category</Label>
+          <Input
+            name="category"
+            required
+            className="border-gray-200 focus:border-purple-500 focus:ring-purple-500 rounded-lg"
+          />
+        </div>
+
+        <div className="space-y-2">
           <Label className="text-gray-700">SKU</Label>
           <Input
             name="sku"
@@ -76,9 +85,17 @@ export function AddProductForm({ className }: IAddProductFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label className="text-gray-700">Low stck at</Label>
+          <Label className="text-gray-700">Low stock at</Label>
           <Input
             name="lowStock"
+            className="border-gray-200 focus:border-purple-500 focus:ring-purple-500 rounded-lg"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-gray-700">Description</Label>
+          <Input
+            name="description"
             className="border-gray-200 focus:border-purple-500 focus:ring-purple-500 rounded-lg"
           />
         </div>

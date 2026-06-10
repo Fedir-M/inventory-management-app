@@ -1,19 +1,25 @@
+import Link from 'next/link';
+
 interface IStockRowProps {
+  id: string;
   name: string;
   quantity: number;
   lowStock?: number | null;
   sku?: string;
   createdAt?: Date;
   showQuantity?: boolean;
+  isClickable?: boolean;
 }
 
 export function StockRow({
+  id,
   name,
   quantity,
   lowStock,
   sku,
   createdAt,
   showQuantity = true,
+  isClickable = true,
 }: IStockRowProps) {
   // Color's logic: 0 - red, < 10 - yellow, other - green
   const getStatusColor = (qty: number, limit: number | null) => {
@@ -33,13 +39,11 @@ export function StockRow({
         year: '2-digit',
       }).format(createdAt)
     : null;
-
-  return (
-    <div className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
+  const content = (
+    <>
       <div className="flex items-center gap-3">
         <div className={`size-2.5 rounded-full ${dot}`} />
         <span className="font-medium text-sm">{name}</span>
-        {/* sku */}
         {sku && <span className="text-xs text-gray-400 font-mono">{sku}</span>}
       </div>
 
@@ -50,6 +54,20 @@ export function StockRow({
       {formattedDate && (
         <span className="text-xs text-gray-400">{formattedDate}</span>
       )}
-    </div>
+    </>
+  );
+
+  const className =
+    'flex justify-between items-center p-2 bg-gray-50 rounded-lg';
+
+  // Если isClickable === false, возвращаем обычный div вместо Link
+  if (!isClickable) {
+    return <div className={className}>{content}</div>;
+  }
+
+  return (
+    <Link href={`/product/${id}`} className={className}>
+      {content}
+    </Link>
   );
 }

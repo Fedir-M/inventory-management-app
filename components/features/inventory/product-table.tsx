@@ -9,14 +9,10 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { ProductRow } from '@/components/entities/inventory/product-row';
-import { InferSelectModel } from 'drizzle-orm';
-import { product } from '@/db/schema';
-
-// Типизация, основанная на схеме базы данных
-type Product = InferSelectModel<typeof product>;
+import { TProduct } from '@/db/db.types';
 
 interface InventoryProductTableProps {
-  products: Product[];
+  products: TProduct[];
 }
 
 export function InventoryProductTable({
@@ -29,8 +25,9 @@ export function InventoryProductTable({
           <TableRow className="hover:bg-transparent border-b-0">
             <TableHead className="pl-6">Title</TableHead>
             <TableHead>SKU</TableHead>
+            <TableHead>Category</TableHead>
             <TableHead>Price</TableHead>
-            <TableHead>Qty</TableHead>
+            <TableHead>Q-ty</TableHead>
             <TableHead>Low stock</TableHead>
             <TableHead className="text-right pr-6">Actions</TableHead>
           </TableRow>

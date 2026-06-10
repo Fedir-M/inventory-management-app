@@ -1,5 +1,3 @@
-import { auth } from '@/app/lib/auth';
-import { headers } from 'next/headers';
 import { CirclePlus } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import { AddProductWidget } from '@/components/widgets/add-product-widget';
@@ -8,13 +6,6 @@ import { product } from '@/db/schema';
 import { desc } from 'drizzle-orm';
 
 export default async function AddProductPage() {
-  // Check the session on a server
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session) return null;
-
   const products = await db
     .select()
     .from(product)

@@ -1,1 +1,0 @@
-ALTER TABLE "product" ALTER COLUMN "lowStock" DROP NOT NULL;

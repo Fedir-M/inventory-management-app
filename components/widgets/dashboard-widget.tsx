@@ -146,6 +146,7 @@ export function DashboardWidget({
             {products.map((product) => (
               <StockRow
                 key={product.id}
+                id={product.id}
                 name={product.name}
                 quantity={product.quantity}
                 lowStock={product.lowStock}
