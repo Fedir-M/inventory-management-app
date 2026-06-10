@@ -1,55 +1,68 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { PageHeader } from '@/components/ui/page-header';
-import { Lock, Settings, User } from 'lucide-react';
+import { Pencil } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { auth } from '@/app/lib/auth';
 
-export default async function SettingsPage() {
+export default async function MyProfilePage() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect('/sign-in');
+  }
+
+  const { user } = session;
+  const initials = user.name ? user.name.charAt(0).toUpperCase() : '?';
+
   return (
-    <div className="p-8 space-y-6">
-      <PageHeader
-        title="Settings page"
-        description="Manage your account preferences and profile."
-        icon={<Settings size={58} className="text-brand-bg-sideBar" />}
-      />
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-xl font-semibold text-gray-900">My Profile</h2>
+      </div>
 
-      <div className="grid gap-6">
-        {/* Секция профиля */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="size-5" /> Profile
-            </CardTitle>
-            <CardDescription>Update your personal information.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {/* Здесь будет форма редактирования профиля */}
-            <p className="text-sm text-gray-500">
-              Coming soon: Profile edit form
-            </p>
-          </CardContent>
-        </Card>
+      <div className="space-y-6">
+        {/* ----- user's name ----- */}
+        <div className="flex items-center justify-between py-4 border-b border-gray-100">
+          <div>
+            <div className="font-medium text-gray-900">User name</div>
+            <p className="text-sm text-gray-500">This is a display name</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-gray-600">{user.name}</span>
+            <Button variant="ghost" size="icon">
+              <Pencil className="size-4" />
+            </Button>
+          </div>
+        </div>
 
-        {/* Секция безопасности */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Lock className="size-5" /> Security
-            </CardTitle>
-            <CardDescription>
-              Manage your password and authentication.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+        {/* ----- Avatar ----- */}
+        <div className="flex items-center justify-between py-4">
+          <div>
+            <div className="font-medium text-gray-900">Profile image</div>
             <p className="text-sm text-gray-500">
-              Coming soon: Password change form
+              Upload your own image as your avatar
             </p>
-          </CardContent>
-        </Card>
+          </div>
+
+          <Avatar
+            size="lg"
+            className="size-12 shrink-0 aspect-square border-none"
+          >
+            {user.image && (
+              <AvatarImage
+                src={user.image}
+                alt={user.name || 'User'}
+                className="size-full object-cover"
+              />
+            )}
+            <AvatarFallback className="bg-brand-dark text-brand-light font-bold text-[20px] m-0">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+        </div>
       </div>
     </div>
   );
