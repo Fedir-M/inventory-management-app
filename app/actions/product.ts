@@ -5,14 +5,16 @@ import { product } from '@/db/schema';
 import { revalidatePath } from 'next/cache';
 import { auth } from '../lib/auth';
 import { headers } from 'next/headers';
+import { productSchema } from '../lib/validations/productSchema';
 
+// --- TActionResponse is our 'communication protocol' between server and client ---
 export type TActionResponse = {
   success: boolean;
   message: string;
+  errors?: Record<string, string>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function addProduct(prevState: any, formData: FormData) {
+export async function addProduct(formData: FormData) {
   try {
     const session = await auth.api.getSession({
       headers: await headers(),
@@ -25,38 +27,39 @@ export async function addProduct(prevState: any, formData: FormData) {
       };
     }
 
-    const name = formData.get('name') as string;
-    const sku = formData.get('sku') as string;
-    const price = parseFloat(formData.get('price') as string);
-    const quantity = parseInt(formData.get('quantity') as string);
-    const lowStockRaw = formData.get('lowStock') as string;
-    // Если строка пустая, превращаем её в null или undefined для базы данных
-    const lowStock = lowStockRaw ? parseInt(lowStockRaw) : null;
+    // Validation
+    const validatedData = productSchema.safeParse(Object.fromEntries(formData));
 
-    const category = formData.get('category') as string;
-    const description = formData.get('description') as string;
+    if (!validatedData.success) {
+      // Converting errors of Zod into a plain object (RHF need it)
+      const { fieldErrors } = validatedData.error.flatten();
 
-    // В Drizzle мы передаем объект с полями прямо сюда:
+      return {
+        success: false,
+        message: 'Check the form for errors',
+        // transfer errors to fields
+        errors: Object.fromEntries(
+          Object.entries(fieldErrors).map(([key, val]) => [key, val?.[0]]),
+        ),
+      } as TActionResponse;
+    }
+
+    // --- INSERT INTO THE DATABASE ---
     await db.insert(product).values({
-      name,
-      sku,
-      price,
-      quantity,
-      lowStock: lowStock,
-      category,
-      description,
+      ...validatedData.data,
       createdBy: session.user.id,
       updatedBy: session.user.id,
     });
+    // ---/ INSERT INTO THE DATABASE /> ---
 
     revalidatePath('/dashboard');
+    // revalidatePath('/add-product');
     return { success: true, message: 'Product added successfully !' };
   } catch (error) {
-    // реальная ошибка
-    console.error('Ошибка базы данных:', error);
+    console.error('Error of DB:', error);
     return {
       success: false,
-      message: `Ошибка: ${error instanceof Error ? error.message : 'Неизвестная ошибка'}`,
+      message: `Error: ${error instanceof Error ? error.message : 'Unknown errror'}`,
     };
   }
 }

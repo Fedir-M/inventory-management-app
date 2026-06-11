@@ -46,7 +46,7 @@ export default async function RootLayout({
         </main>
 
         <Toaster
-          position="top-right"
+          position="bottom-right"
           toastOptions={{
             classNames: {
               toast: 'border-1',
