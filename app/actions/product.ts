@@ -27,7 +27,7 @@ export async function addProduct(formData: FormData) {
       };
     }
 
-    // Validation
+    // --- Validation ---
     const validatedData = productSchema.safeParse(Object.fromEntries(formData));
 
     if (!validatedData.success) {

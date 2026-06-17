@@ -69,6 +69,7 @@ export const product = pgTable(
     lowStock: integer('lowStock').default(10),
     category: text('category'),
     description: text('description'),
+    image: text('image'),
     // ---
     createdBy: text('created_by').references(() => user.id),
     createdAt: timestamp('createdAt').defaultNow().notNull(),

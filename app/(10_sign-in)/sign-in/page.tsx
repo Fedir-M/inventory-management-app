@@ -38,7 +38,7 @@ export default function SignInPage() {
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-purple-50 to-purple-100 p-4">
       <div className="max-w-md w-full space-y-6 bg-white p-8 rounded-xl shadow-md">
         <h2 className="text-center text-3xl font-bold tracking-tight text-gray-900">
-          Вход в систему
+          Enter to the system
         </h2>
 
         {error && (

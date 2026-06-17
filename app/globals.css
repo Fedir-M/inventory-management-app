@@ -65,7 +65,7 @@
 
 :root {
   /* The main & branded colors */
-  --brand-primary: oklch(0.6 0.25 285);
+  --brand-primary: oklch(59.021% 0.23603 286.273);
   --brand-dark: oklch(0.5 0.25 285);
   --brand-bg-dark: oklch(16.843% 0.07117 289.397 / 0.145);
   --brand-bgMain-pages: oklch(44.483% 0.12386 293.103 / 0.078);

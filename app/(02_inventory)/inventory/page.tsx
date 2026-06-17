@@ -53,6 +53,7 @@ export default async function InventoryPage({
       quantity: product.quantity,
       category: product.category,
       description: product.description,
+      image: product.image,
       createdAt: product.createdAt,
       updatedAt: product.updatedAt,
       lowStock: product.lowStock,
