@@ -189,9 +189,14 @@ export function ProductImageUploader({
 
       {/* --- Layer 4. PASS-THROUGH overlay for Drag&Drop --- */}
       {isDragActive && (
-        <div className="absolute inset-1 bg-blue-500/10 rounded-md flex flex-col items-center justify-center gap-2 pointer-events-none z-20 backdrop-blur-[1px]">
-          <UploadCloud size={40} className="animate-bounce text-white" />
-          <span className="text-md font-medium text-white">Drop it here!</span>
+        <div className="absolute inset-1 bg-brand-border/60 rounded-md flex flex-col items-center justify-center gap-2 pointer-events-none z-20 backdrop-blur-[2px] transition-opacity duration-150">
+          <UploadCloud
+            size={42}
+            className="animate-bounce !text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]"
+          />
+          <span className="text-md font-semibold !text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
+            Drop it here!
+          </span>
         </div>
       )}
     </div>
