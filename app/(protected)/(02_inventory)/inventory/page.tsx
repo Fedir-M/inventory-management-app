@@ -5,6 +5,7 @@ import { product } from '@/db/schema';
 import { ilike, sql, asc, desc } from 'drizzle-orm';
 import { ShelvingUnit } from 'lucide-react';
 import { AnyColumn } from 'drizzle-orm';
+import { requireSession } from '@/app/lib/session';
 
 export type TSortOrder = 'asc' | 'desc';
 
@@ -20,6 +21,10 @@ interface IInventoryPageProps {
 export default async function InventoryPage({
   searchParams,
 }: IInventoryPageProps) {
+  // Check the session on a server
+  const session = await requireSession();
+  console.log(`User accessing inventory: ${session.user.id}`);
+
   const paramsFromPromise = await searchParams;
 
   // ----- Sorting. Default values -----

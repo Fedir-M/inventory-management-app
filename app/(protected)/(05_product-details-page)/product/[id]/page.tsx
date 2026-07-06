@@ -3,12 +3,17 @@ import { getProductById } from '@/db/db-queries';
 import { PageHeader } from '@/components/ui/page-header';
 import { Captions } from 'lucide-react';
 import { ProductDetailsPagedWidget } from '@/components/widgets/product-details-paged-widget';
+import { requireSession } from '@/app/lib/session';
 
 export default async function ProductDetailsPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+  // Check the session on a server
+  const session = await requireSession();
+  console.log(`User accessing to details: ${session.user.id}`);
+
   const { id } = await params;
 
   const product = await getProductById(id);

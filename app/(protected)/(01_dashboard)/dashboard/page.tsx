@@ -10,19 +10,11 @@ import {
   getProductChartData,
 } from '@/db/db-queries';
 import { DashboardWidget } from '@/components/widgets/dashboard-widget';
+import { requireSession } from '@/app/lib/session';
 
 export default async function DashboardPage() {
   // Check the session on a server
-  const headerList = await headers();
-  const session = await auth.api.getSession({
-    headers: headerList,
-  });
-
-  console.log('Dashboard page - Session found:', !!session);
-
-  if (!session) {
-    redirect('/sign-in');
-  }
+  const session = await requireSession();
 
   const [stats, data, initialProducts, efficiency] = await Promise.all([
     getDashboardStats(),
