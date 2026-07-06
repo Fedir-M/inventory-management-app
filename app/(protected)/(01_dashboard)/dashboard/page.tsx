@@ -1,4 +1,5 @@
 import { auth } from '@/app/lib/auth';
+import { redirect } from 'next/navigation';
 import { PageHeader } from '@/components/ui/page-header';
 import { headers } from 'next/headers';
 import { LayoutDashboard } from 'lucide-react';
@@ -12,11 +13,16 @@ import { DashboardWidget } from '@/components/widgets/dashboard-widget';
 
 export default async function DashboardPage() {
   // Check the session on a server
+  const headerList = await headers();
   const session = await auth.api.getSession({
-    headers: await headers(),
+    headers: headerList,
   });
 
-  if (!session) return null;
+  console.log('Dashboard page - Session found:', !!session);
+
+  if (!session) {
+    redirect('/sign-in');
+  }
 
   const [stats, data, initialProducts, efficiency] = await Promise.all([
     getDashboardStats(),
