@@ -1,3 +1,4 @@
+import { sql } from 'drizzle-orm';
 import { relations } from 'drizzle-orm';
 import {
   boolean,
@@ -7,6 +8,7 @@ import {
   pgTable,
   text,
   timestamp,
+  check,
 } from 'drizzle-orm/pg-core';
 
 export const user = pgTable('user', {
@@ -79,6 +81,7 @@ export const product = pgTable(
   (table) => ({
     skuIdx: index('product_sku_idx').on(table.sku),
     categoryIdx: index('product_category_idx').on(table.category),
+    positiveQuantity: check('positive_quantity', sql`${table.quantity} >= 0`),
   }),
 );
 
