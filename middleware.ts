@@ -6,6 +6,9 @@ export async function middleware(request: NextRequest) {
   const sessionToken = request.cookies.get('better-auth.session_token')?.value;
   const { pathname } = request.nextUrl;
 
+  // LOG FOR DEBUGGING
+  console.log('DEBUG_PATH:', pathname, 'HAS_TOKEN:', !!sessionToken);
+
   // Exclude the home page from middleware check
   if (pathname === '/') {
     return NextResponse.next();
