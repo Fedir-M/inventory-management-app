@@ -2,8 +2,13 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
-  // get cookies
   const sessionToken = request.cookies.get('better-auth.session_token')?.value;
+  const { pathname } = request.nextUrl;
+
+  // Исключаем главную страницу от проверки Middleware
+  if (pathname === '/') {
+    return NextResponse.next();
+  }
 
   const protectedPaths = [
     '/dashboard',
@@ -12,11 +17,7 @@ export async function middleware(request: NextRequest) {
     '/product',
     '/settings',
   ];
-
-  // Check whether the path begins with any of the protected one
-  const isProtected = protectedPaths.some((path) =>
-    request.nextUrl.pathname.startsWith(path),
-  );
+  const isProtected = protectedPaths.some((path) => pathname.startsWith(path));
 
   if (isProtected && !sessionToken) {
     return NextResponse.redirect(new URL('/sign-in', request.url));
