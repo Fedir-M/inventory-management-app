@@ -4,9 +4,9 @@ import { db } from '@/db';
 import { product, product as productsTable } from '@/db/schema';
 import { count, eq, sql } from 'drizzle-orm';
 
-// ====================================================================
-//*                         Info for "Key Metrics"
-// ====================================================================
+// ==================================================================
+//*                        Info for "Key Metrics"
+// ==================================================================
 export async function getDashboardStats() {
   const oneMonthAgo = new Date();
   oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
