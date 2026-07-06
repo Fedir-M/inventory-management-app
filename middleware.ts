@@ -1,15 +1,35 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
-  // Просто выводим в логи Vercel (не браузера!) то, что происходит
-  console.log('Request to:', request.nextUrl.pathname);
+export async function middleware(request: NextRequest) {
+  const sessionToken = request.cookies.get('better-auth.session_token')?.value;
+  const { pathname } = request.nextUrl;
 
-  // Никаких редиректов. Просто пропускаем всё.
+  // 1. Always allow these public paths
+  const publicPaths = ['/', '/sign-in', '/sign-up'];
+  if (publicPaths.includes(pathname)) {
+    return NextResponse.next();
+  }
+
+  // 2. Define protected paths
+  const protectedPaths = [
+    '/dashboard',
+    '/inventory',
+    '/add-product',
+    '/product',
+    '/settings',
+  ];
+  const isProtected = protectedPaths.some((path) => pathname.startsWith(path));
+
+  // 3. If protected and no token, redirect to sign-in
+  if (isProtected && !sessionToken) {
+    return NextResponse.redirect(new URL('/sign-in', request.url));
+  }
+
   return NextResponse.next();
 }
 
-// Этот конфиг говорит: "Не трогай файлы сборки и картинки"
 export const config = {
+  // Use the same matcher to ensure we don't block static assets
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };
