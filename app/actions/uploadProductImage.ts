@@ -1,8 +1,7 @@
 'use server';
 
 import { eq } from 'drizzle-orm';
-import { writeFile, mkdir } from 'fs/promises';
-import path from 'path';
+import { put } from '@vercel/blob';
 import { TActionResponse } from './product';
 import { auth } from '../lib/auth';
 import { headers } from 'next/headers';
@@ -14,7 +13,7 @@ export async function UploadProductImage(
   formData: FormData,
 ): Promise<TActionResponse> {
   try {
-    // --- 1. Authorization check (acctually we could do the separat func of this already)---
+    // --- 1. Authorization check ---
     const session = await auth.api.getSession({
       headers: await headers(),
     });
@@ -26,19 +25,49 @@ export async function UploadProductImage(
       };
     }
 
-    // --- 2. Extracting data from FormData ---
-    const file = formData.get('file') as File | null;
+    // --- 2. Extract basic data from FormData ---
     const productId = formData.get('productId') as string | null;
+    const remove = formData.get('remove') as string | null;
 
-    if (!file || !productId) {
+    if (!productId) {
       return {
         success: false,
-        message: 'Missing file or product ID',
+        message: 'Missing product ID',
       };
     }
 
-    // --- 3. Server-side file validation ---
-    // Size limitation: 3 МБ (3 * 1024 * 1024 bytes)
+    // --- 3. Scenario: Remove Image ---
+    if (remove === 'true') {
+      await db
+        .update(product)
+        .set({
+          image: null,
+          updatedBy: session.user.id,
+        })
+        .where(eq(product.id, productId));
+
+      // Clear Next.js cache for affected routes to display up-to-date data
+      revalidatePath(`/product/${productId}`);
+      revalidatePath('/inventory');
+
+      return {
+        success: true,
+        message: 'Image removed successfully!',
+      };
+    }
+
+    // --- 4. Scenario: Upload Image ---
+    const file = formData.get('file') as File | null;
+
+    if (!file) {
+      return {
+        success: false,
+        message: 'Missing file',
+      };
+    }
+
+    // --- 5. Server-side file validation ---
+    // Size limitation: 3 MB (3 * 1024 * 1024 bytes)
     const MAX_FILE_SIZE = 3 * 1024 * 1024;
     if (file.size > MAX_FILE_SIZE) {
       return {
@@ -47,7 +76,7 @@ export async function UploadProductImage(
       };
     }
 
-    // 3.1. File's type check
+    // Mime-type check
     if (!file.type.startsWith('image/')) {
       return {
         success: false,
@@ -55,45 +84,36 @@ export async function UploadProductImage(
       };
     }
 
-    // --- 4. Preparing to save a file to disk (with Node.js)---
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    // --- 6. Uploading directly to Vercel Blob cloud storage ---
+    // Construct a unique path inside the bucket using timestamps to avoid name collisions
+    const cloudPath = `products/${productId}-${Date.now()}-${file.name}`;
 
-    // 4.1. Generate a unique file name to avoid collisions
-    const fileExtension = path.extname(file.name) || '.png';
-    const uniqueFilename = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}${fileExtension}`;
+    const blob = await put(cloudPath, file, {
+      access: 'public', // Makes the file publicly accessible via a direct URL
+    });
 
-    // 4.2. Path to the folder within the project
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-    const filePath = path.join(uploadDir, uniqueFilename);
+    // The secure web URL provided by Vercel storage (https://...)
+    const imageUrl = blob.url;
 
-    // 4.3. Creating  public/uploads folder
-    await mkdir(uploadDir, { recursive: true });
-
-    // 4.4. writting the file
-    await writeFile(filePath, buffer);
-
-    // 4.5. Piblic URL(in browser))
-    const imageUrl = `/uploads/${uniqueFilename}`;
-
-    // --- 5. Updating bd via Drizzle ---
+    // --- 7. Updating database record via Drizzle ORM ---
     await db
       .update(product)
       .set({
-        image: imageUrl,
+        image: imageUrl, // Storing the remote cloud URL instead of a local path
         updatedBy: session.user.id,
       })
       .where(eq(product.id, productId));
 
-    // --- 6. Cache reset ---
+    // --- 8. Revalidating cache to update UI instantly ---
     revalidatePath(`/product/${productId}`);
+    revalidatePath('/inventory');
 
     return {
       success: true,
       message: 'Image uploaded successfully!',
     };
   } catch (error) {
-    console.error('Error uploading image:', error);
+    console.error('Error handling product image:', error);
     return {
       success: false,
       message: `Upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
