@@ -1,22 +1,6 @@
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
-// Better Auth
-import { auth } from '@/app/lib/auth';
-import { headers } from 'next/headers';
 
 export default async function Home() {
-  const headerList = await headers();
-
-  const session = await auth.api.getSession({
-    headers: headerList,
-  });
-
-  console.log('Home page session check:', !!session);
-
-  if (session) {
-    redirect('/dashboard');
-  }
-
   return (
     <div className="min-h-screen bg-linear-to-br from-purple-50 to-purple-100 flex items-center justify-center">
       <div className="container mx-auto px-4 py-16">
