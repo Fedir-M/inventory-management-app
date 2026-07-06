@@ -13,7 +13,7 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { TSortOrder } from '@/app/(02_inventory)/inventory/page';
+import { TSortOrder } from '@/app/(protected)/(02_inventory)/inventory/page';
 
 interface IInventoryWidgetProps {
   initialProducts: TProduct[];
