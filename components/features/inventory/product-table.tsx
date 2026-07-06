@@ -11,7 +11,7 @@ import {
 import { ProductRow } from '@/components/entities/inventory/product-row';
 import { TProduct } from '@/db/db.types';
 import { SortableHeaderTable } from '@/components/entities/inventory/SortableHeaderTable';
-import { TSortOrder } from '@/app/(02_inventory)/inventory/page';
+import { TSortOrder } from '@/app/(protected)/(02_inventory)/inventory/page';
 
 interface IInventoryProductTableProps {
   products: TProduct[];
