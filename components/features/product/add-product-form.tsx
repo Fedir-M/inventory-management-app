@@ -122,6 +122,23 @@ export function AddProductForm({ className }: IAddProductFormProps) {
           </div>
         </div>
 
+        {/* Low Stock Threshold */}
+        <div className="space-y-2">
+          <Label className="text-gray-700">Low Stock Threshold</Label>
+          <Input
+            {...register('lowStock')}
+            type="number"
+            className={getInputStyles(!!errors.lowStock)}
+            placeholder="10"
+          />
+          {errors.lowStock && (
+            <p className="text-xs text-red-500">{errors.lowStock.message}</p>
+          )}
+          <p className="text-xs text-gray-500">
+            Get alert when quantity reaches this level.
+          </p>
+        </div>
+
         {/* Category */}
         <div className="space-y-2">
           <Label className="text-gray-700">Category</Label>
