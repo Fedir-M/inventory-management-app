@@ -1,45 +1,15 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export async function middleware(request: NextRequest) {
-  // Get the session token from cookies
-  const sessionToken = request.cookies.get('better-auth.session_token')?.value;
-  const { pathname } = request.nextUrl;
+export function middleware(request: NextRequest) {
+  // Просто выводим в логи Vercel (не браузера!) то, что происходит
+  console.log('Request to:', request.nextUrl.pathname);
 
-  // LOG FOR DEBUGGING
-  console.log('DEBUG_PATH:', pathname, 'HAS_TOKEN:', !!sessionToken);
-
-  // Exclude the home page from middleware check
-  if (pathname === '/') {
-    return NextResponse.next();
-  }
-
-  const protectedPaths = [
-    '/dashboard',
-    '/inventory',
-    '/add-product',
-    '/product',
-    '/settings',
-  ];
-
-  // Check if the path begins with any of the protected routes
-  const isProtected = protectedPaths.some((path) => pathname.startsWith(path));
-
-  // If the path is protected and no token exists, redirect to sign-in
-  if (isProtected && !sessionToken) {
-    return NextResponse.redirect(new URL('/sign-in', request.url));
-  }
-
+  // Никаких редиректов. Просто пропускаем всё.
   return NextResponse.next();
 }
 
-// Routes to be protected
+// Этот конфиг говорит: "Не трогай файлы сборки и картинки"
 export const config = {
-  matcher: [
-    '/dashboard/:path*',
-    '/inventory/:path*',
-    '/add-product/:path*',
-    '/settings/:path*',
-    '/product/:path*',
-  ],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };
