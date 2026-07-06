@@ -29,8 +29,7 @@ export default function SignInPage() {
       setError(authError.message || 'Неверный email или пароль');
     } else {
       // При успешном входе редиректим в панель управления
-      router.push('/dashboard');
-      router.refresh();
+      window.location.href = '/dashboard';
     }
   };
 
