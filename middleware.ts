@@ -2,10 +2,11 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
+  // Get the session token from cookies
   const sessionToken = request.cookies.get('better-auth.session_token')?.value;
   const { pathname } = request.nextUrl;
 
-  // Исключаем главную страницу от проверки Middleware
+  // Exclude the home page from middleware check
   if (pathname === '/') {
     return NextResponse.next();
   }
@@ -17,8 +18,11 @@ export async function middleware(request: NextRequest) {
     '/product',
     '/settings',
   ];
+
+  // Check if the path begins with any of the protected routes
   const isProtected = protectedPaths.some((path) => pathname.startsWith(path));
 
+  // If the path is protected and no token exists, redirect to sign-in
   if (isProtected && !sessionToken) {
     return NextResponse.redirect(new URL('/sign-in', request.url));
   }
@@ -26,7 +30,7 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// routes to be protected
+// Routes to be protected
 export const config = {
   matcher: [
     '/dashboard/:path*',
