@@ -1,7 +1,4 @@
-import { auth } from '@/app/lib/auth';
-import { redirect } from 'next/navigation';
 import { PageHeader } from '@/components/ui/page-header';
-import { headers } from 'next/headers';
 import { LayoutDashboard } from 'lucide-react';
 import {
   getDashboardEfficiency,

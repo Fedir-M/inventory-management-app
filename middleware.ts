@@ -2,9 +2,13 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
-  const sessionToken = request.cookies.get(
-    '__Secure-better-auth.session_token',
-  )?.value;
+  // На продакшене с HTTPS Better Auth добавляет префикс __Secure-, локально на HTTP — нет...тут был сюрприз с входом. локально не переходило.
+  const cookieName =
+    process.env.NODE_ENV === 'production'
+      ? '__Secure-better-auth.session_token'
+      : 'better-auth.session_token';
+
+  const sessionToken = request.cookies.get(cookieName)?.value;
   const { pathname } = request.nextUrl;
 
   // 1. Always allow these public paths

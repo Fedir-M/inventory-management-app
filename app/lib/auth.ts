@@ -18,14 +18,14 @@ export const auth = betterAuth({
 
   //  1. The full URL of your production application.
   // Better Auth uses this to configure cookie paths.
-  baseURL: 'https://inventory-management-app-pearl.vercel.app',
+  baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
 
   // 2. cookie settings for security and operation on subdomains.
   cookie: {
-    secure: true,
-    sameSite: 'Lax', // Standard for preventing CSRF.
-    // We specify the domain so that the cookie is available on all paths.
-    domain: '.vercel.app',
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'Lax',
+    // Домен для кук нужен только на продакшене
+    domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : undefined,
   },
 
   // --------------------------

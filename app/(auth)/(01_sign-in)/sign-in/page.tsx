@@ -46,11 +46,15 @@ export default function SignInPage() {
 
         <form className="space-y-4" onSubmit={handleSignIn}>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
               type="email"
+              id="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -58,11 +62,15 @@ export default function SignInPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Пароль
             </label>
             <input
               type="password"
+              id="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}

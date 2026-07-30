@@ -14,6 +14,11 @@ export const requireSession = cache(async () => {
     headers: headerList,
   });
 
+  // для отладки:
+  console.log('--- REQUIRE SESSION DEBUG ---');
+  console.log('Cookies received:', headerList.get('cookie'));
+  console.log('Session result:', session);
+
   if (!session) {
     redirect('/sign-in');
   }
