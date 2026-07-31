@@ -1,15 +1,16 @@
-import { test, expect } from '@playwright/test';
-import { HomePage } from '../pages/HomePage';
+import { test, expect } from '../fixtures/test';
 
 test.describe('HomePage of Inventory Management', () => {
-  test('should display the main heading and buttons', async ({ page }) => {
-    // Arrange (Подготовка)
-    const homePage = new HomePage(page);
+  test('should display the main heading and buttons', async ({ homePage }) => {
+    // === 1. ARRANGE (Подготовка) ===
+    // Arrange: ручной 'const homePage = new HomePage(page)' больше не нужен!
+    // Playwright создал и передал его автоматически.
 
-    // Act (Действие)
+    // === 2. ACT (Действие) ===
     await homePage.open();
 
-    // Assert (Проверка) (проверяем элементы через созданный Page Object)
+    // === 3. ASSERT (Проверка) ===
+    // (проверяем элементы через созданный Page Object)
     await expect(homePage.mainHeading).toHaveText('Inventory Management');
 
     await expect(homePage.signInLink).toBeVisible();

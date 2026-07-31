@@ -1,10 +1,15 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { test as base } from '@playwright/test';
-import { HomePage } from '../pages/HomePage'; // твой класс главной страницы
+export { expect } from '@playwright/test';
+import { HomePage } from '../pages/HomePage';
+import { SignUpPage } from '../pages/SignUpPage';
+import { SignInPage } from '../pages/SignInPage';
 
 // Шаг А: Объявляем TypeScript-тип для нашей фикстуры
 type MyFixtures = {
   homePage: HomePage;
+  signUpPage: SignUpPage;
+  signInPage: SignInPage;
 };
 
 // Шаг Б: Расширяем стандартный test
@@ -17,7 +22,16 @@ export const test = base.extend<MyFixtures>({
     // 1.2. Передаем его в тест (метод use отдаєт объект наружу)
     await use(homePage);
   },
-});
 
-// Экспортируем expect, чтобы брать всё из одного файла фикстур
-export { expect } from '@playwright/test';
+  // --- 2. signUpPage fixture ---
+  signUpPage: async ({ page }, use) => {
+    const signUpPage = new SignUpPage(page);
+    await use(signUpPage);
+  },
+
+  // --- 3. signInPage fixture (добавляем её сюда!) ---
+  signInPage: async ({ page }, use) => {
+    const signInPage = new SignInPage(page);
+    await use(signInPage);
+  },
+});
