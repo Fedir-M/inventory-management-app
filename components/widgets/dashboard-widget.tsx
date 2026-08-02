@@ -167,7 +167,12 @@ export function DashboardWidget({
           </CardHeader>
           <CardContent className="flex flex-col items-center justify-center py-10">
             <div className="size-32 rounded-full border-8 border-brand-primary flex items-center justify-center">
-              <span className="text-2xl font-bold">{percentage}%</span>
+              <span
+                className="text-2xl font-bold"
+                data-testid="efficiency-value"
+              >
+                {percentage}%
+              </span>
             </div>
 
             <div

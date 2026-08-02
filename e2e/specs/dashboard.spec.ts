@@ -62,17 +62,57 @@ test.describe('Dashboard: Analytics & State Validation', () => {
     }
   });
 
-  // //* --- TEST 03: New products per week ---
-  // test('03. New products per week - should...', async ({
-  //   signInPage,
-  //   dashboardPage,
-  //   page,
-  // }) => {});
+  //* --- TEST 03: New products per week ---
+  test('03. New products per week - should display chart and show tooltip on hover', async ({
+    signInPage,
+    dashboardPage,
+    page,
+  }) => {
+    // === ARRANGE & ACT ===
+    await signInPage.open();
+    await signInPage.loginUser('shaky@3d.com', 'Shaky@2026');
+    await expect(page).toHaveURL('/dashboard');
 
-  // //* --- TEST 04: Efficiency ---
-  // test('04. New products per week - should...', async ({
-  //   signInPage,
-  //   dashboardPage,
-  //   page,
-  // }) => {});
+    // === ASSERT MICRO (New products per week) ===
+    // 1. Проверяем видимость карточки графика
+    await expect(dashboardPage.graphCard).toBeVisible();
+
+    // 2. Проверяем наличие точек на графике
+    const firstPoint = dashboardPage.chartPoints.first();
+    await expect(firstPoint).toBeVisible();
+
+    const pointsCount = await dashboardPage.chartPoints.count();
+    expect(pointsCount).toBeGreaterThan(0);
+
+    // 3. Наводим на одну из точек (например, на последнюю или первую) и проверяем тултип
+    await firstPoint.hover();
+
+    // 4. Проверяем, что появился тултип с данными (как на скриншоте)
+    await expect(dashboardPage.chartTooltip).toBeVisible();
+    const tooltipText = await dashboardPage.chartTooltip.textContent();
+    expect(tooltipText).toContain('value');
+  });
+
+  //* --- TEST 04: Efficiency ---
+  test('04. Efficiency - should display efficiency card and metric value correctly', async ({
+    signInPage,
+    dashboardPage,
+    page,
+  }) => {
+    // === ARRANGE & ACT ===
+    await signInPage.open();
+    await signInPage.loginUser('shaky@3d.com', 'Shaky@2026');
+    await expect(page).toHaveURL('/dashboard');
+
+    // === ASSERT MICRO (Efficiency Block) ===
+    // 1. Проверяем видимость карточки Efficiency
+    await expect(dashboardPage.efficiencyCard).toBeVisible();
+
+    // 2. Проверяем, что внутри карточки присутствует корректная метрика (например, число или процент)
+    const efficiencyValue = dashboardPage.efficiencyCard.locator(
+      '[data-testid="efficiency-value"]',
+    );
+    await expect(efficiencyValue).toBeVisible();
+    await expect(dashboardPage.efficiencyCard).not.toBeEmpty();
+  });
 });

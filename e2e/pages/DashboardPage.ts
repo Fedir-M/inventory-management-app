@@ -18,6 +18,13 @@ export class DashboardPage extends BasePage {
   readonly outOfStockTab: Locator;
   readonly stockRows: Locator;
 
+  // Внутри блока New products per week
+  readonly chartPoints: Locator;
+  readonly chartTooltip: Locator;
+
+  // Внутри блока Efficiency
+  readonly efficiencyMetric: Locator;
+
   constructor(page: Page) {
     super(page);
 
@@ -36,6 +43,16 @@ export class DashboardPage extends BasePage {
     this.lowStockTab = page.locator('button', { hasText: 'Low Stock' });
     this.outOfStockTab = page.locator('button', { hasText: 'Out of Stock' });
     this.stockRows = page.locator('[data-testid^="stock-row-"]');
+
+    // Локаторы для New products per week
+    // Цепляемся за кружочки/точки графика (обычно это элементы circle или интерактивные точки в библиотеках графиков)
+    this.chartPoints = page.locator('[data-testid="graph-card"] circle'); // или по селектору точек твоего графика
+    this.chartTooltip = page.locator('text=value :'); // или по контейнеру тултипа, судя по скриншоту там есть текст "value :"
+
+    // Локаторы для Efficiency
+    this.efficiencyMetric = page.locator(
+      '[data-testid="efficiency-card"] [data-testid="efficiency-value"]',
+    );
   }
 
   async open() {
