@@ -27,6 +27,11 @@ export class SignInPage extends BasePage {
     await this.emailInput.fill(email);
     await this.passwordInput.fill(pass);
 
-    await this.submitButton.click();
+    // Добавляем ожидание смены URL прямо здесь,
+    // чтобы метод ждал завершения входа и редиректа на дашборд
+    await Promise.all([
+      this.page.waitForURL('/dashboard', { timeout: 10000 }), // Ждем переход
+      this.submitButton.click(), // Кликаем вход
+    ]);
   }
 }

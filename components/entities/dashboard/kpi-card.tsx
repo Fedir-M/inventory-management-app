@@ -15,6 +15,7 @@ export function KPICard({
   growth,
   icon,
   trendDirection = 'positive',
+  ...props
 }: IKPICardProps) {
   const isPositive = growth.startsWith('+');
 
@@ -22,7 +23,7 @@ export function KPICard({
   const colorClass = isGood ? 'text-emerald-600' : 'text-destructive';
 
   return (
-    <Card>
+    <Card {...props}>
       <CardContent className="p-4 pt-4">
         <div className="flex justify-between items-start mb-4">
           <span className="text-sm font-bold text-gray-500">{title}</span>

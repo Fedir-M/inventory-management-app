@@ -66,7 +66,11 @@ export function StockRow({
   }
 
   return (
-    <Link href={`/product/${id}`} className={className}>
+    <Link
+      href={`/product/${id}`}
+      data-testid={`stock-row-${id}`}
+      className={className}
+    >
       {content}
     </Link>
   );

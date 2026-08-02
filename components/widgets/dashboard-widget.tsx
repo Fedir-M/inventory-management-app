@@ -61,7 +61,7 @@ export function DashboardWidget({
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* ----- 1. Main. Key Metrics ----- */}
-        <Card className="border shadow-sm">
+        <Card className="border shadow-sm" data-testid="key-metrics-card">
           <CardHeader>
             <CardTitle className="font-semibold text-lg p-4">
               Key Metrics
@@ -70,6 +70,7 @@ export function DashboardWidget({
           <CardContent className="grid grid-cols-3 gap-4">
             <KPICard
               title="Total Products"
+              data-testid="totalProductsKpi"
               value={stats.current.totalProducts.toString()}
               growth={productDiff >= 0 ? `+${productDiff}` : `${productDiff}`}
               trendDirection="positive"
@@ -83,6 +84,7 @@ export function DashboardWidget({
             />
             <KPICard
               title="Total Value"
+              data-testid="totalValueKpi"
               value={`$${stats.current.totalValue.toLocaleString()}`}
               growth={
                 valueDiff >= 0
@@ -100,6 +102,7 @@ export function DashboardWidget({
             />
             <KPICard
               title="Low Stock"
+              data-testid="totalLowStockKpi"
               value={stats.current.lowStock.toString()}
               growth={
                 lowStockDiff >= 0 ? `+${lowStockDiff}` : `${lowStockDiff}`
@@ -117,7 +120,7 @@ export function DashboardWidget({
         </Card>
 
         {/* ----- 2. Graph (Placeholder) ----- */}
-        <Card className="border shadow-sm">
+        <Card className="border shadow-sm" data-testid="graph-card">
           <CardHeader>
             <CardTitle className="font-semibold text-lg p-4">
               New products per week
@@ -129,7 +132,7 @@ export function DashboardWidget({
         </Card>
 
         {/* ---- 3. Stock Levels ----- */}
-        <Card className="border shadow-sm">
+        <Card className="border shadow-sm" data-testid="stock-levels-card">
           <div className="flex items-center justify-between p-4 pb-2">
             <h3 className="font-semibold text-lg px-4">Stock Levels</h3>
 
@@ -156,7 +159,7 @@ export function DashboardWidget({
         </Card>
 
         {/* ----- 4. Efficiency ----- */}
-        <Card className="border shadow-sm">
+        <Card className="border shadow-sm" data-testid="efficiency-card">
           <CardHeader>
             <CardTitle className="font-semibold text-lg p-4">
               Efficiency
