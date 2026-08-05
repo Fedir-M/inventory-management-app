@@ -88,6 +88,7 @@ export function AddProductForm({ className }: IAddProductFormProps) {
           <Label className="text-gray-700">Title</Label>
           <Input
             {...register('name')}
+            data-testid="product-name-input"
             className={getInputStyles(!!errors.name)}
           />
           {errors.name && (
@@ -101,6 +102,7 @@ export function AddProductForm({ className }: IAddProductFormProps) {
             <Label className="text-gray-700">Price</Label>
             <Input
               {...register('price')}
+              data-testid="product-price-input"
               type="number"
               step="0.01"
               className={getInputStyles(!!errors.price)}
@@ -113,6 +115,7 @@ export function AddProductForm({ className }: IAddProductFormProps) {
             <Label className="text-gray-700">Quantity</Label>
             <Input
               {...register('quantity')}
+              data-testid="product-quantity-input"
               type="number"
               className={getInputStyles(!!errors.quantity)}
             />
@@ -127,6 +130,7 @@ export function AddProductForm({ className }: IAddProductFormProps) {
           <Label className="text-gray-700">Low Stock Threshold</Label>
           <Input
             {...register('lowStock')}
+            data-testid="product-low-stock-input"
             type="number"
             className={getInputStyles(!!errors.lowStock)}
             placeholder="10"
@@ -144,6 +148,7 @@ export function AddProductForm({ className }: IAddProductFormProps) {
           <Label className="text-gray-700">Category</Label>
           <Input
             {...register('category')}
+            data-testid="product-category-input"
             className={getInputStyles(!!errors.category)}
           />
           {errors.category && (
@@ -156,6 +161,7 @@ export function AddProductForm({ className }: IAddProductFormProps) {
           <Label className="text-gray-700">SKU</Label>
           <Input
             {...register('sku')}
+            data-testid="product-sku-input"
             className={getInputStyles(!!errors.sku)}
           />
           {errors.sku && (
@@ -168,6 +174,7 @@ export function AddProductForm({ className }: IAddProductFormProps) {
           <Label className="text-gray-700">Description</Label>
           <textarea
             {...register('description')}
+            data-testid="product-description-input"
             className={cn(
               getInputStyles(!!errors.description),
               'min-h-25 resize-y',
@@ -180,6 +187,7 @@ export function AddProductForm({ className }: IAddProductFormProps) {
 
         <Button
           type="submit"
+          data-testid="submit-product-btn"
           disabled={isSubmitting}
           className="w-full bg-purple-600 hover:bg-purple-700 mt-2"
         >

@@ -1,17 +1,15 @@
 import { test, expect } from '../fixtures/test';
 
 test.describe('Dashboard: Analytics & State Validation', () => {
+  test.beforeEach(async ({ page, dashboardPage }) => {
+    // Браузер уже залогинен через storageState.
+    await dashboardPage.open();
+    await expect(page).toHaveURL('/dashboard');
+  });
   //* --- TEST 01: Key Metrics ---
   test('01. Key Metrics - should display main cards and correct KPI data formats', async ({
-    signInPage,
     dashboardPage,
-    page,
   }) => {
-    // === ARRANGE & ACT ===
-    await signInPage.open();
-    await signInPage.loginUser('shaky@3d.com', 'Shaky@2026');
-    await expect(page).toHaveURL('/dashboard');
-
     // === ASSERT MACRO (Структура дашборда) ===
     await expect(dashboardPage.keyMetricsCard).toBeVisible();
     await expect(dashboardPage.graphCard).toBeVisible();
@@ -34,15 +32,9 @@ test.describe('Dashboard: Analytics & State Validation', () => {
 
   //* --- TEST 02: Stock Levels ---
   test('02. Stock Levels - should support tab switching and product navigation', async ({
-    signInPage,
     dashboardPage,
     page,
   }) => {
-    // === ARRANGE & ACT ===
-    await signInPage.open();
-    await signInPage.loginUser('shaky@3d.com', 'Shaky@2026');
-    await expect(page).toHaveURL('/dashboard');
-
     // === ASSERT MICRO (Stock Levels) ===
     await expect(dashboardPage.stockLevelsCard).toBeVisible();
 
@@ -64,15 +56,8 @@ test.describe('Dashboard: Analytics & State Validation', () => {
 
   //* --- TEST 03: New products per week ---
   test('03. New products per week - should display chart and show tooltip on hover', async ({
-    signInPage,
     dashboardPage,
-    page,
   }) => {
-    // === ARRANGE & ACT ===
-    await signInPage.open();
-    await signInPage.loginUser('shaky@3d.com', 'Shaky@2026');
-    await expect(page).toHaveURL('/dashboard');
-
     // === ASSERT MICRO (New products per week) ===
     // 1. Проверяем видимость карточки графика
     await expect(dashboardPage.graphCard).toBeVisible();
@@ -95,15 +80,8 @@ test.describe('Dashboard: Analytics & State Validation', () => {
 
   //* --- TEST 04: Efficiency ---
   test('04. Efficiency - should display efficiency card and metric value correctly', async ({
-    signInPage,
     dashboardPage,
-    page,
   }) => {
-    // === ARRANGE & ACT ===
-    await signInPage.open();
-    await signInPage.loginUser('shaky@3d.com', 'Shaky@2026');
-    await expect(page).toHaveURL('/dashboard');
-
     // === ASSERT MICRO (Efficiency Block) ===
     // 1. Проверяем видимость карточки Efficiency
     await expect(dashboardPage.efficiencyCard).toBeVisible();

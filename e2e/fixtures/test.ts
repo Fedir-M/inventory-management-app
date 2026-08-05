@@ -5,6 +5,7 @@ import { HomePage } from '../pages/HomePage';
 import { SignUpPage } from '../pages/SignUpPage';
 import { SignInPage } from '../pages/SignInPage';
 import { DashboardPage } from '../pages/DashboardPage';
+import { AddProductPage } from '../pages/AddProductPage';
 
 // Шаг А: Объявляем TypeScript-тип для нашей фикстуры
 type MyFixtures = {
@@ -12,6 +13,7 @@ type MyFixtures = {
   signUpPage: SignUpPage;
   signInPage: SignInPage;
   dashboardPage: DashboardPage;
+  addProductPage: AddProductPage;
 };
 
 // Шаг Б: Расширяем стандартный test
@@ -40,5 +42,10 @@ export const test = base.extend<MyFixtures>({
   // --- 4. dashboardPage fixture ---
   dashboardPage: async ({ page }, use) => {
     await use(new DashboardPage(page)); // Инициализируем фикстуру
+  },
+
+  // --- 5. addProductPage fixture ---
+  addProductPage: async ({ page }, use) => {
+    await use(new AddProductPage(page));
   },
 });

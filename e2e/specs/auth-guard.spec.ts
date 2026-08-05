@@ -1,6 +1,9 @@
 import { test, expect } from '../fixtures/test';
 
 test.describe('Authentication Guard & Access Control', () => {
+  // Сбрасываем storageState для всех тестов в этом блоке, чтобы проверить гостей
+  test.use({ storageState: { cookies: [], origins: [] } });
+
   // Массив защищенных маршрутов, которые должен проверять тест
   const protectedRoutes = [
     '/dashboard',
@@ -21,7 +24,10 @@ test.describe('Authentication Guard & Access Control', () => {
       await expect(page).toHaveURL('/sign-in');
     });
   }
+});
 
+// Отдельный блок для тестов, которым нужна авторизация (если есть другие тесты)
+test.describe('Authenticated Flow', () => {
   // 2. Тест успешного входа (authenticated flow)
   test('Should successfully login with valid credentials and redirect to /dashboard', async ({
     signInPage,
@@ -34,7 +40,7 @@ test.describe('Authentication Guard & Access Control', () => {
     await signInPage.emailInput.fill('shaky@3d.com');
     await signInPage.passwordInput.fill('Shaky@2026');
 
-    // Перехватываем сетевой запрос авторизации и кликаем submit (как мы делали ранее для стабильности)
+    // Перехватываем сетевой запрос авторизации и кликаем submit
     const [response] = await Promise.all([
       page.waitForResponse(
         (res) =>
