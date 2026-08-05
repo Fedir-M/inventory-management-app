@@ -25,7 +25,7 @@ export const auth = betterAuth({
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'Lax',
     // Домен для кук нужен только на продакшене
-    domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : undefined,
+    // domain: process.env.NODE_ENV === 'production' ? '.vercel.app' : undefined,
   },
 
   // --------------------------
