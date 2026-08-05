@@ -1,10 +1,19 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  env: {
-    DATABASE_URL:
-      'postgresql://neondb_owner:npg_pTmEyo3F7DiM@ep-steep-smoke-algkp36f-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require',
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com', // ЭТОТ КОД РАЗРЕШАЕТ ПОКАЗ ФОТО
+        pathname: '/**',
+      },
+    ],
   },
 };
 
 export default nextConfig;
+
+// env: {
+//     DATABASE_URL: - использую из самого Versel
+//     },
