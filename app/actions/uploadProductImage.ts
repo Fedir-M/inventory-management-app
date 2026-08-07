@@ -114,6 +114,7 @@ export async function UploadProductImage(
     };
   } catch (error) {
     console.error('Error handling product image:', error);
+    console.error('DETAIL ERROR IN UploadProductImage:', error);
     return {
       success: false,
       message: `Upload failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
