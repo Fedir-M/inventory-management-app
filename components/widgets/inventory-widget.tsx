@@ -120,7 +120,7 @@ export function InventoryWidget({
       />
 
       {totalPages > 1 && (
-        <Pagination>
+        <Pagination data-testid="inventory-pagination">
           <PaginationContent>
             {/* button "Previous" */}
             <PaginationItem>

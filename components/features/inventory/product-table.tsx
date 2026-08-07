@@ -28,7 +28,7 @@ export function InventoryProductTable({
 }: IInventoryProductTableProps) {
   return (
     <div className="border border-gray-200 rounded-xl bg-white shadow-sm overflow-hidden">
-      <Table className="w-full">
+      <Table data-testid="inventory-product-table" className="w-full">
         <TableHeader className="bg-brand-bg-dark font-semibold text-[16px] [&_tr]:border-none  ">
           <TableRow className="hover:bg-transparent border-b-0">
             <TableHead className="pl-6">

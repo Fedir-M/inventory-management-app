@@ -31,11 +31,17 @@ export function PageHeader({
 
   return (
     <div className={cn('mb-6 flex items-center gap-3', className)}>
-      {icon && <span>{icon}</span>}
+      {icon && <span data-testid="inventory-icon">{icon}</span>}
       <div>
-        <HeadingTag className={variants[variant]}>{title}</HeadingTag>
+        <HeadingTag
+          data-testid="inventory-header"
+          className={variants[variant]}
+        >
+          {title}
+        </HeadingTag>
         {description && (
           <p
+            data-testid="inventory-description"
             className={cn(
               'text-muted-foreground mt-1',
               variant === 'h1' ? 'text-lg' : 'text-base',

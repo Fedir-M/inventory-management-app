@@ -8,7 +8,7 @@ test.describe('Add Product Page: Structure & Critical Write Operations', () => {
     await expect(page).toHaveURL('/add-product');
   });
 
-  // --- TEST 01: Header Block ---
+  //* --- TEST 01: Header Block ---
   test('01. Header - should display correct title, description, and icon', async ({
     addProductPage,
   }) => {

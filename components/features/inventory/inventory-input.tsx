@@ -11,6 +11,7 @@ export function InventoryInput({
     <div className="flex justify-center border border-gray-200 bg-white p-4 rounded-xl shadow-sm overflow-hidden">
       <Input
         placeholder="Search products..."
+        data-testid="inventory-search-input"
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="max-w-md"
