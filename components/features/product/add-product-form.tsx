@@ -42,6 +42,9 @@ export function AddProductForm({ className }: IAddProductFormProps) {
   } = useForm<TProductForm>({
     resolver: zodResolver(productSchema) as Resolver<TProductForm>,
     mode: 'onBlur',
+    defaultValues: {
+      lowStock: 10,
+    },
   });
 
   const onSubmit: SubmitHandler<TProductForm> = async (data) => {
